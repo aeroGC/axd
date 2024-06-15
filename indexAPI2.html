@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styleAPI2.css">
+    <title>Weather Now 2</title>
+</head>
+<body>
+    <header>
+        <div class="title_logo">
+            <img src="./logos_icons/Vector.svg" alt="Logo" class="logo">
+            <span class="title_text">Weather Now</span>
+
+            <span>
+                <form class="searchBar">
+                    <div class="search_elements">
+                        <input type="text" class="cityInput" placeholder="Enter city">
+                        <button type="submit">Get Weather</button>
+                        <img src="./logos_icons/location.jpg" alt="Use Current Location" class="locationButton" title="Use Current Location" />
+                    </div>
+                    <ul class="suggestions"></ul>
+                </form>
+            </span>
+
+        </div>
+
+        <nav class="navigation">
+            <a class= "navigation_item" href="./aboutus.html">About us</a>
+            <a class= "navigation_item" href="./contactus.html">Contact</a>
+            <a class= "navigation_item" href="./indexAPI2.html">Home</a>
+        </nav>
+    </header>
+
+    <div class="main_content">
+        <div class="weather_container">
+            <img class="weather_visualizer"> 
+            <div class="weather_text">
+            <h3 class="weather_city"></h3>
+            <span class="weather_degrees"></span>
+            <p class="weather_minmax"></p>
+            <p class="weather_description"></p>
+            <p class="weather_date"></p>
+            <p class="weather_time"></p>    
+        </div>
+
+        <div class="weather_detailscontainer"></div>
+    </div>
+
+    <div class="weekly_forecast">
+            <div class="day_forecast">
+                <p class="day_name">Monday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Tuesday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Wednesday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Thursday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Friday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Saturday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+            <div class="day_forecast">
+                <p class="day_name">Sunday</p>
+                <p class="day_temp">XX°C</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="additional_boxes">
+        <div class="additional_box" id="box1">Box1</div>
+        <div class="additional_box" id="box2">Box 2</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="weatherAPI.js"></script>
+    <script src="weatherDisplay.js"></script>
+    <script src="errorHandling.js"></script>
+    <script src="helpers.js"></script>
+    <script src="app.js"></script>
+
+    
+</body>
+</html>
