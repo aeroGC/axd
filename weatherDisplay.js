@@ -111,3 +111,5 @@ function displayHourlyTemperatureChart(hourlyTemperatures) {
         }
     });
 }
+
+//Test 1
