@@ -25,9 +25,6 @@ async function getWeatherDataByCity(city) {
 }
 
 
-
-
-// Function to fetch hourly temperature data for a city
 async function fetchHourlyTemperatureData(city) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
     const response = await fetch(apiUrl);
@@ -37,5 +34,13 @@ async function fetchHourlyTemperatureData(city) {
     }
 
     const data = await response.json();
-    return data.list.map(hour => hour.main.temp);
+    const timezoneOffset = data.city.timezone; // Get the timezone offset of the city
+
+    // Extract the next 12 hours of data and adjust the time for the city's timezone
+    const hourlyData = data.list.slice(0, 16).map(current => ({
+        temp: current.main.temp,
+        time: current.dt + timezoneOffset // Adjust the time for the city's timezone
+    }));
+
+    return hourlyData;
 }

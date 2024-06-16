@@ -26,14 +26,13 @@ function getWeatherIcon(condition) {
     }
 }
 
-// Function to get current hour labels
-function getCurrentHourLabels() {
-    const currentHour = new Date().getHours(); // Get the current hour
-    const labels = [];
-    for (let i = 0; i < 12; i++) {
-        const hour = (currentHour + i) % 24; // Calculate the hour modulo 24 to handle wrapping around midnight
-        labels.push(hour + 'h'); // Push the hour label to the array
-    }
+// Function to get the time of the city and display it on the chart.
+function getCurrentHourLabels(hourlyData) {
+    const labels = hourlyData.map(data => {
+        const date = new Date(data.time * 1000); // Convert to milliseconds
+        const hours = date.getUTCHours(); // Get the hour in 24-hour format (UTC)
+        return `${hours}h`;
+    });
     return labels;
 }
 
