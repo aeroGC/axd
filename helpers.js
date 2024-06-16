@@ -6,7 +6,7 @@ function getWeatherIcon(condition) {
     const conditionIcons = {
         "clear sky": "/axd/logos_icons/weather_condition/clearSky.jpeg",
         "few clouds": "/axd/logos_icons/weather_condition/fewClouds.jpeg",
-        "scattered clouds": "axd/logos_icons/weather_condition/scatteredClouds.jpeg",
+        "scattered clouds": "/axd/logos_icons/weather_condition/scatteredClouds.jpeg",
         "overcast clouds": "/axd/logos_icons/weather_condition/overcastClouds.jpg",
         "broken clouds": "/axd/logos_icons/weather_condition/brokenClouds.jpeg",
         "light intensity drizzle|drizzle|heavy intensity drizzle|light intensity drizzle rain|drizzle rain|heavy intensity drizzle rain|shower rain and drizzle|heavy shower rain and drizzle|shower drizzle": "/axd/logos_icons/weather_condition/rain.jpeg",
