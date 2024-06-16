@@ -209,6 +209,7 @@ main {
     padding: 10px;
     border-radius: 10px;
     box-sizing: border-box;
+    margin-right: 20px; /*it makes margin to the border, I will change later*/
 }
 /* mobile */
 
