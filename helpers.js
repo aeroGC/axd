@@ -111,4 +111,6 @@ async function getWeatherDataByCity(city) {
     }
 
     return await response.json();
+
+    //lol
 }
