@@ -242,4 +242,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Call the function to get weather for the user's current location when the page loads
     getWeatherForCurrentLocation();
+
+    //hola mundo
+
+    // aja , si 
+    //como te va 
+    // mejor me voy
+    //dormi mal
 });

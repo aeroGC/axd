@@ -1,25 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styleAPI2.css">
-    <title>Weather Now</title>
-</head>
-<header>
-    <div class="title_logo">
-        <a class="title_text" href="./indexAPI2.html">
-            <img class="main_logo" src="/axd/logos_icons/main_logo.png" alt="Main logo">
-        </a>
-    </div>
-    <nav class="navigation">
-        <a class= "navigation_item" href="./aboutus.html">About us</a>
-        <a class= "navigation_item" href="./contactus.html">Contact</a>
-        <a class= "navigation_item" href="./indexAPI2.html">Home</a>
-    </nav>
-</header>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./styleAPI2.css">
+        <title>Weather Now 2</title>
+    </head>
 <body>
-    <h1>Contact Us</h1>
-</body>
+    <header>
+        <div class="title_logo">
+            <div class="logo">
+                <a class="title_text" href="./indexAPI2.html">
+                    <img class="main_logo" src="/logos_icons/main_logo.png" alt="Main logo">
+                </a>
+            </div>
+            <span>
+                <form class="searchBar">
+                    <div class="search_elements">
+                        <input type="text" class="cityInput" placeholder="Enter city">
+                        <button type="submit">Get Weather</button>
+                        <img src="./logos_icons/location.jpg" alt="Use Current Location" class="locationButton" title="Use Current Location" />
+                    </div>
+                    <ul class="suggestions"></ul>
+                </form>
+            </span>
+        </div>
 
+        <nav class="navigation">
+            <a class= "navigation_item" href="./indexAPI2.html">Home</a>
+            <a class= "navigation_item" href="./aboutus.html">About us</a>
+            <a class= "navigation_item" href="./contactus.html">Contact</a>
+        </nav>
+    </header>
+<main>
+<body>
+    <div class="main_container">
+        <h1>Contact Us</h1>
+        <div>
+            <p> Name</p>
+        </div>
+        <div>
+            <p> Email</p>
+        </div>
+        <div class="message">
+            <p> Message</p>
+        </div>
+        <button> Submit</button>
+    </div>
+    <div>
+
+    </main>
+
+    <style>
+  :root {
+    --main_color: #4b216d;
+    --dark_purple:#893a8a;
+    --white_text-input: #FFFFFF;
+    --gray: #D9D9D9;
+}
+main {
+    margin: 0 5% 0 5%;
+    }
+
+h1 {
+        color: var(--dark_purple);
+        font-size: 50px;
+        text-align: left;
+        margin-bottom: 20px;
+        margin-top: 5rem;
+    }
+
+.main_container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+    max-width: 500px;
+}
+
+.main_container > div {
+    background-color: var(--gray);
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.message {
+    height: 15rem;
+}
+
+button {
+    background-color: var(--dark_purple);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+
+button:hover {
+    background-color: var(--main_color);
+}
+
+</style>
+</body>
 </html>
