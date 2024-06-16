@@ -10,6 +10,11 @@
     --gray: #D9D9D9;
 }
 
+.main_logo{
+    width: 12rem;
+    margin-left: 2rem;
+}
+
 .title_logo {
         background-color: var(--main_color);
         padding: 1rem;
@@ -121,6 +126,16 @@ main {
     margin:  0 0 10px 0;
 }
 
+
+/*Weather Condition Icon*/
+.weather_icon {
+    display: inline-block;
+    width: 40px; /* Adjust the icon size */
+    height: 40px;
+    vertical-align: top; /* Align the icon vertically with the text */
+    margin-left: 8px; /* Add some space between the text and the icon */
+}
+
 .weather_date,
 .weather_time,
 .weather_degrees {
@@ -228,7 +243,7 @@ main {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    background-color: black;
+    background-color: grey;
     border-radius: 5px;
     max-height: 200px; /* Altura máxima de la lista */
     overflow-y: 100px;  /* Permitir desplazamiento vertical si la lista es demasiado larga */

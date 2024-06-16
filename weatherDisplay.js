@@ -2,6 +2,7 @@
 function displayWeatherInfo(data) {
     const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, timezone,} = data;
     const weatherCondition = weather[0].description; // Get the weather description
+    const iconCode = weather[0].icon; //Get the weather condition icon
 
     // Get local date and time of the city
     const now = new Date(Date.now() + (timezone * 1000)); // Convert to milliseconds
@@ -13,8 +14,8 @@ function displayWeatherInfo(data) {
     const weatherDate = document.querySelector('.weather_date');
     const weatherTime = document.querySelector('.weather_time');
     const weatherDegrees = document.querySelector('.weather_degrees');
-    const weatherMax = document.querySelector(`.weather_minmax`)
-    const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon element
+    const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon background element
+    const weatherIcon = document.querySelector('.weather_icon'); // Get weather consition icon.
 
     weatherCity.innerHTML = `${city}, ${country}`;
 
@@ -26,6 +27,9 @@ function displayWeatherInfo(data) {
     // Display temperature
     const celsiusTemp = Math.round((temp - 273.15).toFixed(1));
     weatherDegrees.innerHTML = `${celsiusTemp}°C`;
+
+    //Fetch the wether icon information.
+    weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`; // Using 2x size for better resolution
 
     // Set weather icon dynamically
     weatherVisualizer.src = getWeatherIcon(weatherCondition);
