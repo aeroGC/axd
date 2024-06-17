@@ -253,26 +253,3 @@ main {
         margin-bottom: 10px;
     }
 }
-
-
-.suggestions {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    background-color: grey;
-    border-radius: 5px;
-    max-height: 200px; /* Altura máxima de la lista */
-    overflow-y: 100px;  /* Permitir desplazamiento vertical si la lista es demasiado larga */
-    position: absolute; /* Para posicionar la lista debajo del campo de entrada */
-    z-index: 1000;
-    width: 220px;
-}
-
-.suggestions li {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.suggestions li:hover {
-    background-color: #f0f0f0;
-}

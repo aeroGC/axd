@@ -1,6 +1,3 @@
-const cityInput = document.querySelector(".cityInput");
-const suggestions = document.querySelector(".suggestions");
-
 // Function to map weather conditions to icons
 function getWeatherIcon(condition) {
     const conditionIcons = {
@@ -36,38 +33,6 @@ function getCurrentHourLabels(hourlyData) {
     return labels;
 }
 
-// Función para obtener sugerencias de lugares
-async function getSuggestions(query) {
-    const apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`;
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-        throw new Error("No se pudieron obtener las sugerencias");
-    }
-
-    return await response.json();
-}
-
-// Mostrar sugerencias debajo del campo de entrada
-async function showSuggestions(suggestionsData) {
-    suggestions.innerHTML = '';
-    // Fetch full country names
-    const countries = await fetchCountryNames();
-    suggestionsData.forEach(location => {
-        const suggestionItem = document.createElement('li');
-        const countryFullName = countries[location.country] || location.country; // Use full country name if available, otherwise use country code
-        const suggestionText = `${location.name}, ${countryFullName}`;
-        suggestionItem.textContent = suggestionText;
-        suggestionItem.title = suggestionText; // Set title attribute to display full text on hover
-        suggestionItem.addEventListener('click', () => {
-            cityInput.value = suggestionText; // Set input value to the complete suggestion
-            suggestions.innerHTML = ''; // Clear suggestions
-            getWeatherDataByCity(location.name); // Call function to get weather
-        });
-        suggestions.appendChild(suggestionItem);
-    });
-}
-
 // Function to fetch full country names
 async function fetchCountryNames() {
     const response = await fetch('https://restcountries.com/v3.1/all');
@@ -84,22 +49,6 @@ async function fetchCountryNames() {
     return countries;
 }
 
-
-// Event listener para el campo de entrada
-cityInput.addEventListener('input', async function () {
-    const query = cityInput.value;
-    if (query.length >= 3) {
-        try {
-            const suggestionsData = await getSuggestions(query);
-            showSuggestions(suggestionsData);
-        } catch (error) {
-            console.error(error);
-        }
-    } else {
-        suggestions.innerHTML = '';
-    }
-});
-
 // Funciones existentes para obtener y mostrar el clima
 async function getWeatherDataByCity(city) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
@@ -113,3 +62,36 @@ async function getWeatherDataByCity(city) {
 
     //lol
 }
+
+
+function initializeAutocomplete() {
+    const cityInput = document.querySelector(".cityInput");
+    const suggestions = document.querySelector(".suggestions");
+
+    const autocomplete = new google.maps.places.Autocomplete(cityInput, {
+        types: ['(cities)']
+    });
+
+    autocomplete.addListener('place_changed', function () {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            console.log("No details available for input: '" + place.name + "'");
+            return;
+        }
+        // Clear the existing suggestions
+        suggestions.innerHTML = '';
+        // Display the selected place
+        cityInput.value = place.name; 
+        getWeatherDataByCity(place.name); // Call function to get weather
+    });
+
+    cityInput.addEventListener('input', function () {
+        if (cityInput.value.length < 3) {
+            suggestions.innerHTML = ''; // Clear suggestions if input is less than 3 characters
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    initializeAutocomplete();
+});
