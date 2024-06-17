@@ -154,6 +154,7 @@ main {
     border-radius: 20px;
     width: 80%; /* Adjusted width to fit inside the weather visualizer */
     max-width: 80%; /* Added max-width to ensure it doesn't exceed the container */
+    z-index: 1;
 }
 .weather_detailscontainer p {
     font-size: 1.5vw; /* Using viewport width to make font size responsive */   
@@ -218,6 +219,39 @@ main {
     padding: 15px; /* Padding around the canvas */
     border-radius: 15px; /* Rounded corners */
     border: 1px solid black;
+}
+
+.container_top{
+    width: 100%;
+    height: 50%;
+    background-color: #4b216d;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container_bottom{
+    width: 100%;
+    height: 50%;
+    background-color: #893a8a;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.sunrise_container,
+.sunset_container,
+.moonrise_container,
+.moonset_container{
+    height: 80px;
+    width: 40px;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+
+.sunmoon_icon{
+    height: 50%;
+    width: 100%;
 }
 
 #hourlyChart {

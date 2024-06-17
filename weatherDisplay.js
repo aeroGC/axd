@@ -36,13 +36,11 @@ function displayWeatherInfo(data) {
 
     // Display weather details
     const feels_like_celsius = Math.round((feels_like - 273.15).toFixed(1));
-    const weatherDetailsContainer = document.querySelector('.weather_detailscontainer');
-    weatherDetailsContainer.innerHTML = `<p>Humidity: ${humidity}%</p>
-                                         <p>Feels like: ${feels_like_celsius}°C</p>
-                                         <p>Pressure: ${pressure} hPa</p>
-                                         <p>Wind: ${speed} m/s at ${deg}°</p>
-                                         <p>Weather: ${weatherCondition}</p>
-                                         <p>Max/Min: ${celsiusTemp_max}°/${celsiusTemp_min}°</p>`;
+
+    //Humidity
+    const weatherDetail = document.querySelector(`.humidity_detail`);
+    weatherDetail.innerHTML = `Humidity: ${humidity}%`;
+
 
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(city);
