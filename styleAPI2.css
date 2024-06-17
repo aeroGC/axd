@@ -154,7 +154,6 @@ main {
     border-radius: 20px;
     width: 80%; /* Adjusted width to fit inside the weather visualizer */
     max-width: 80%; /* Added max-width to ensure it doesn't exceed the container */
-    z-index: 1;
 }
 .weather_detailscontainer p {
     font-size: 1.5vw; /* Using viewport width to make font size responsive */   
