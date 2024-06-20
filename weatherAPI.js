@@ -25,6 +25,22 @@ async function getWeatherDataByCity(city) {
 }
 
 
+async function getDailyForecast(city) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("No se pudo obtener el pronóstico diario.");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error al obtener el pronóstico diario:", error);
+        return null;
+    }
+}
+
+
 async function fetchHourlyTemperatureData(city) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
     const response = await fetch(apiUrl);

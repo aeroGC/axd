@@ -48,6 +48,7 @@
 
         <div class="weather_detailscontainer">
             <img src="/axd\logos_icons\humidity.svg" alt="humidity" width="20px" height="20px">
+
             <p class="humidity_detail">Humidity</p>
 
             <p>Feels Like</p>
@@ -90,39 +91,47 @@
     </div>
 
     <div class="additional_boxes">
-        <div class="additional_box" id="box1">Box1</div>
+
+        <div class="additional_box" id="box1">
+            <canvas id="hourlyChart"></canvas>
+        </div>
+
         <div class="additional_box" id="box2">
 
             <div class="container_top">
                 <div class="sunrise_container">
                     <img class="sunmoon_icon" src="/axd\logos_icons\sunrise.svg" alt="sunrise">
                     <p>Sunrise</p>
-                    <p>14:59</p> 
+                    <p class="sunrise_time">14:59</p> 
                 </div>
     
                 <div class="sunset_container">
                     <img class="sunmoon_icon" src="/axd\logos_icons\sunset.svg" alt="sunset">
                     <p>Sunrise</p>
-                    <p>14:59</p> 
+                    <p class="sunset_time">14:59</p> 
                 </div>
             </div>
             
             
             <div class="container_bottom">
                 <div class="moonrise_container">
-                    <img class="sunmoon_icon"  src="/axd\logos_icons\sunrise.svg" alt="sunrise">
-                    <p>Sunrise</p>
-                    <p>14:59</p> 
+                    <img class="sunmoon_icon"  src="/axd\logos_icons\moon1.svg" alt="sunrise">
+                    <p>Moonrise</p>
+                    <p class="moonrise_time">14:59</p> 
                 </div>
     
                 <div class="moonset_container">
-                    <img class="sunmoon_icon"  src="/axd\logos_icons\sunset.svg" alt="sunset">
-                    <p>Sunrise</p>
-                    <p>14:59</p> 
+                    <img class="sunmoon_icon"  src="/axd\logos_icons\moon1.svg" alt="sunset">
+                    <p>Moonset</p>
+                    <p class="moonset_time">14:59</p> 
                 </div>
             </div>
         </div>
-        <div class="additional_box" id="box3">Box3</div>
+        <div class="additional_box" id="box3">
+            <p class="weather_wind"></p>
+            <p class="weather_pressure"></p>
+            <p class="weather_overview"></p>
+        </div>
     </div>
 </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

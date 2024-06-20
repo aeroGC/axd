@@ -1,6 +1,6 @@
 // Function to display weather information on the webpage
 function displayWeatherInfo(data) {
-    const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, timezone } = data;
+    const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, timezone, weather_overview } = data;
     const weatherCondition = weather[0].description; // Get the weather description
     const iconCode = weather[0].icon; //Get the weather condition icon
 
@@ -41,10 +41,34 @@ function displayWeatherInfo(data) {
     const weatherDetail = document.querySelector(`.humidity_detail`);
     weatherDetail.innerHTML = `Humidity: ${humidity}%`;
 
+    
+
 
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(city);
 }
+function displayDailyForecast(forecastData) {
+    const weeklyForecast = document.querySelector('.weekly_forecast');
+    weeklyForecast.innerHTML = ''; // Clear existing content
+
+    const forecastDays = forecastData.list.filter((_, index) => index % 8 === 0); // Filter data for daily forecast
+
+    forecastDays.forEach(dayData => {
+        const date = new Date(dayData.dt * 1000); // Convert to date
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get day name
+        const temperature = Math.round((dayData.main.temp - 273.15) * 10) / 10; // Convert to Celsius
+
+        const dayForecast = document.createElement('div');
+        dayForecast.classList.add('day_forecast');
+        dayForecast.innerHTML = `
+            <p class="day_name">${dayName}</p>
+            <p class="day_temp">${temperature}°C</p>
+        `;
+
+        weeklyForecast.appendChild(dayForecast);
+    });
+}
+
 
 async function fetchAndDisplayHourlyTemperature(city) {
     try {

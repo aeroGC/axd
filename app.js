@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to get weather data of the user's current location
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async function (position) {
@@ -7,6 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                     const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
                     displayWeatherInfo(weatherData);
+
+                    const city = weatherData.name; // Extract city name
+                    const dailyForecast = await getDailyForecast(city);
+                    if (dailyForecast) {
+                        displayDailyForecast(dailyForecast);
+                    } else {
+                        displayError("Could not fetch daily forecast. Please try again later.");
+                    }
                 } catch (error) {
                     console.error(error);
                     displayError("Could not fetch weather data. Please try again later.");
@@ -16,11 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("Geolocation is not supported by this browser.");
         }
     }
-    
 
-    // Function to initialize event listeners
     function initEventListeners() {
-        // Event listener for manual city search
         const searchBar = document.querySelector(".searchBar");
         searchBar.addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -29,6 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                     const weatherData = await getWeatherDataByCity(city);
                     displayWeatherInfo(weatherData);
+
+                    const dailyForecast = await getDailyForecast(city);
+                    if (dailyForecast) {
+                        displayDailyForecast(dailyForecast);
+                    } else {
+                        displayError("Could not fetch daily forecast. Please try again later.");
+                    }
                 } catch (error) {
                     console.error(error);
                     displayError("Could not fetch weather data. Please try again later.");
@@ -38,14 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Event listener for current location button
         const locationButton = document.querySelector(".locationButton");
         locationButton.addEventListener("click", function () {
             getWeatherForCurrentLocation();
         });
     }
 
-    // Call the function to get weather for the user's current location when the page loads
     getWeatherForCurrentLocation();
     initEventListeners();
 });

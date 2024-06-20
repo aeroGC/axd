@@ -204,7 +204,6 @@ main {
 }
 
 .additional_box {
-    width: 45%; /* fixed width */
     background-color: grey;
     padding: 10px;
     border-radius: 10px;
@@ -212,19 +211,26 @@ main {
     margin-right: 20px; /*it makes margin to the border, I will change later*/
 }
 
+
 #box1 {
-    width: 100%;
-    height: 250px; /* Adjust height*/
-    background-color: #ffffff; /* Background color */
-    padding: 15px; /* Padding around the canvas */
-    border-radius: 15px; /* Rounded corners */
+    width: 60%;
+    height: 250px; /* Adjust height as needed */
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 15px;
     border: 1px solid black;
+    box-sizing: border-box;
+}
+
+#hourlyChart {
+
+    width: 100%;
+    height: 100%;
 }
 
 .container_top{
     width: 100%;
     height: 50%;
-    background-color: #4b216d;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -233,20 +239,21 @@ main {
 .container_bottom{
     width: 100%;
     height: 50%;
-    background-color: #893a8a;
     display: flex;
-    align-items: center;
     justify-content: space-around;
+    align-items: center;
 }
 
 .sunrise_container,
 .sunset_container,
 .moonrise_container,
 .moonset_container{
-    height: 80px;
-    width: 40px;
-    border: 2px solid black;
+    height: 85px;
+    width: 70px;
+    background-color: grey;
+    border-radius: 10px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .sunmoon_icon{
@@ -254,9 +261,13 @@ main {
     width: 100%;
 }
 
-#hourlyChart {
-    width: 100%; /* Ensure the chart takes the full width of its container */
-    height: 100%; /* Ensure the chart takes the full height of its container */
+#box2{
+    width: 20%;
+    background-color: grey;
+}
+
+#box3{
+    width: 20%;
 }
 
 /* mobile */
