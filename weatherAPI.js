@@ -24,6 +24,21 @@ async function getWeatherDataByCity(city) {
     return await response.json();
 }
 
+async function getWeatherOverview(lat, lon) {
+    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall/overview?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("Unable to fetch weather overview.");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching weather overview:", error);
+        return null;
+    }
+}
+
 
 async function getDailyForecast(city) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;

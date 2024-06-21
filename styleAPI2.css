@@ -185,6 +185,16 @@ main {
     color: var(--white_text-input);
 }
 
+.date_name {
+    display: flex;
+    gap: 0.4rem; /* Space between date and name */
+}
+
+.day_icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px;
+}
+
 .day_name,
 .day_temp {
     font-size: 1rem; 
@@ -263,11 +273,14 @@ main {
 
 #box2{
     width: 20%;
+    height: 250px;
     background-color: grey;
 }
 
 #box3{
     width: 20%;
+    height: 250px;
+    overflow-y:scroll;
 }
 
 /* mobile */

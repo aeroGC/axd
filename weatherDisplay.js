@@ -1,8 +1,7 @@
-// Function to display weather information on the webpage
-function displayWeatherInfo(data) {
-    const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, timezone, weather_overview } = data;
+async function displayWeatherInfo(data) {
+    const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, coord: { lon, lat }, timezone } = data;
     const weatherCondition = weather[0].description; // Get the weather description
-    const iconCode = weather[0].icon; //Get the weather condition icon
+    const iconCode = weather[0].icon; // Get the weather condition icon
 
     // Get local date and time of the city
     const now = new Date(Date.now() + (timezone * 1000)); // Convert to milliseconds
@@ -16,6 +15,7 @@ function displayWeatherInfo(data) {
     const weatherDegrees = document.querySelector('.weather_degrees');
     const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon background element
     const weatherIcon = document.querySelector('.weather_icon'); // Get weather condition icon
+    const weatherOverviewElement = document.querySelector('.weather_overview'); // Get weather overview element
 
     weatherCity.innerHTML = `${city}, ${country}`;
 
@@ -28,7 +28,7 @@ function displayWeatherInfo(data) {
     const celsiusTemp = Math.round((temp - 273.15).toFixed(1));
     weatherDegrees.innerHTML = `${celsiusTemp}°C`;
 
-    //Fetch the weather icon information
+    // Fetch the weather icon information
     weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`; // Using 2x size for better resolution
 
     // Set weather icon dynamically
@@ -37,37 +37,108 @@ function displayWeatherInfo(data) {
     // Display weather details
     const feels_like_celsius = Math.round((feels_like - 273.15).toFixed(1));
 
-    //Humidity
+    // Humidity
     const weatherDetail = document.querySelector(`.humidity_detail`);
     weatherDetail.innerHTML = `Humidity: ${humidity}%`;
 
+    // Box 3 Details
     
-
+    // Fetch and display the weather overview
+    const weatherOverviewData = await getWeatherOverview(lat, lon, apiKey);
+    if (weatherOverviewData) {
+        weatherOverviewElement.innerHTML = weatherOverviewData.weather_overview;
+    } else {
+        weatherOverviewElement.innerHTML = 'Could not fetch the weather overview.';
+    }
 
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(city);
 }
+
+
+
 function displayDailyForecast(forecastData) {
-    const weeklyForecast = document.querySelector('.weekly_forecast');
-    weeklyForecast.innerHTML = ''; // Clear existing content
+    const weeklyForecast = document.querySelectorAll('.day_forecast'); // Get all existing day_forecast divs
 
-    const forecastDays = forecastData.list.filter((_, index) => index % 8 === 0); // Filter data for daily forecast
+    if (weeklyForecast.length !== 5) {
+        console.error("There should be exactly 5 '.day_forecast' elements in the HTML.");
+        return;
+    }
 
-    forecastDays.forEach(dayData => {
-        const date = new Date(dayData.dt * 1000); // Convert to date
-        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get day name
-        const temperature = Math.round((dayData.main.temp - 273.15) * 10) / 10; // Convert to Celsius
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set to start of today
+    const nextDayTimestamp = now.getTime() + 86400000; // Get timestamp for the start of tomorrow
 
-        const dayForecast = document.createElement('div');
-        dayForecast.classList.add('day_forecast');
-        dayForecast.innerHTML = `
-            <p class="day_name">${dayName}</p>
-            <p class="day_temp">${temperature}°C</p>
-        `;
+    // Group forecast data by day
+    const daysData = {};
+    forecastData.list.forEach(entry => {
+        const entryDate = new Date(entry.dt * 1000);
+        const entryDay = entryDate.toLocaleDateString('en-US', { weekday: 'long' });
+        const entryDayNumber = entryDate.getDate();
+        const weatherCondition = entry.weather[0].description;
+        const iconCode = entry.weather[0].icon;
 
-        weeklyForecast.appendChild(dayForecast);
+        if (entryDate.getTime() >= nextDayTimestamp) {
+            if (!daysData[entryDay]) {
+                daysData[entryDay] = {
+                    dayNumber: entryDayNumber,
+                    temps: [],
+                    icon: iconCode, // Add icon code
+                    condition: weatherCondition // Add weather condition
+                };
+            }
+            daysData[entryDay].temps.push(entry.main.temp);
+        }
+    });
+
+    // Create an array of 7 days from now
+    const forecastDays = [];
+    for (let i = 1; i <= 5; i++) {
+        const date = new Date(now.getTime() + i * 86400000);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+        const dayNumber = date.getDate();
+
+        if (daysData[dayName]) {
+            forecastDays.push({
+                day: dayName,
+                dayNumber: dayNumber,
+                temps: daysData[dayName].temps,
+                icon: daysData[dayName].icon, // Include icon
+                condition: daysData[dayName].condition // Include weather condition
+            });
+        } else {
+            // Handle the case where forecast data might not be available for some days
+            forecastDays.push({
+                day: dayName,
+                dayNumber: dayNumber,
+                temps: [],
+                icon: null, // No icon available
+                condition: '' // No condition available
+            });
+        }
+    }
+
+    forecastDays.forEach((dayData, index) => {
+        const temps = dayData.temps;
+        const maxTemp = temps.length > 0 ? Math.round(Math.max(...temps) - 273.15) : 'N/A'; // Convert max temp to Celsius and round
+        const minTemp = temps.length > 0 ? Math.round(Math.min(...temps) - 273.15) : 'N/A'; // Convert min temp to Celsius and round
+
+        // Update the existing divs with new data
+        const dayForecast = weeklyForecast[index];
+        dayForecast.querySelector('.day_name').textContent = dayData.day;
+        dayForecast.querySelector('.day_date').textContent = dayData.dayNumber;
+        dayForecast.querySelector('.day_temp').textContent = `${maxTemp}°/${minTemp}°`;
+        
+        // Set the weather condition icon
+        const dayIcon = dayForecast.querySelector('.day_icon');
+        if (dayData.icon) {
+            dayIcon.src = `http://openweathermap.org/img/wn/${dayData.icon}@2x.png`; // Use OpenWeatherMap icons
+        } else {
+            dayIcon.src = ''; // Clear icon if not available
+        }
     });
 }
+
 
 
 async function fetchAndDisplayHourlyTemperature(city) {
@@ -91,8 +162,6 @@ function displayHourlyTemperatureChart(hourlyData) {
     const box1 = document.getElementById('box1');
     const canvas = document.createElement('canvas');
     canvas.id = 'hourlyChart';
-    canvas.width = 500; // Adjust width as needed
-    canvas.height = 200; // Adjust height as needed
     box1.innerHTML = ''; // Clear existing content
     box1.appendChild(canvas);
 
@@ -116,6 +185,8 @@ function displayHourlyTemperatureChart(hourlyData) {
             }]
         },
         options: {
+            responsive: true, // Make the chart responsive
+            maintainAspectRatio: false, // Do not maintain aspect ratio
             scales: {
                 y: {
                     beginAtZero: false, // Adjust as needed
