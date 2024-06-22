@@ -40,6 +40,13 @@ async function displayWeatherInfo(data) {
     // Humidity
     const weatherDetail = document.querySelector(`.humidity_detail`);
     weatherDetail.innerHTML = `Humidity: ${humidity}%`;
+    // Feels Like
+    const feelsLikeDetail = document.querySelector('.feels_like_detail');
+    feelsLikeDetail.innerHTML = `Feels Like: ${feels_like_celsius}°C`;
+
+    // Max/Min
+    const maxMinDetail = document.querySelector('.max_min_detail');
+    maxMinDetail.innerHTML = `Max/Min: ${celsiusTemp_max}°/${celsiusTemp_min}°`;
 
     // Box 3 Details
     

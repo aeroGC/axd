@@ -14,16 +14,16 @@
                     <img class="main_logo" src="/axd/logos_icons/main_logo.png" alt="Main logo">
                 </a>
             </div>
-            <span>
-                <form class="searchBar">
-                    <div class="search_elements">
-                        <input type="text" class="cityInput" placeholder="Enter city">
-                        <button type="submit">Get Weather</button>
-                        <img src="./logos_icons/location.jpg" alt="Use Current Location" class="locationButton" title="Use Current Location" />
-                    </div>
-                    <ul class="suggestions"></ul>
-                </form>
-            </span>
+            <span class="search_wrapper">
+    <form class="searchBar">
+        <div class="search_elements">
+            <input type="text" class="cityInput" placeholder="Enter city">
+            <button type="submit">Get Weather</button>
+            <img src="./logos_icons/location.jpg" alt="Use Current Location" class="locationButton" title="Use Current Location" />
+        </div>
+        <ul class="suggestions"></ul>
+    </form>
+</span>
 
         </div>
 
@@ -37,25 +37,26 @@
     <div class="main_content">
         <div class="weather_container">
             <img class="weather_visualizer"> 
+            <div class="half1">
             <div class="weather_text">
-            <h3 class="weather_city"></h3>
-            <img class="weather_icon" alt="Weather icon">
-            <span class="weather_degrees"></span>
-            <p class="weather_description"></p>
-            <p class="weather_date"></p>
-            <p class="weather_time"></p>
+                <h3 class="weather_city"></h3>
+                <img class="weather_icon" alt="Weather icon">
+                <span class="weather_degrees"></span>
+                <p class="weather_description"></p>
+                <p class="weather_date"></p>
+                <p class="weather_time"></p>
+            </div>  
+        
         </div>
-
-        <div class="weather_detailscontainer">
+        <div class="half2">
+            <div class="weather_detailscontainer">
             <img src="/axd\logos_icons\humidity.svg" alt="humidity" width="20px" height="20px">
-
             <p class="humidity_detail">Humidity</p>
-
-            <p>Feels Like</p>
-            <p>Max/Min</p>
-            <p>Weather Forecast</p>
-            
+            <p class="feels_like_detail">Feels Like</p>
+            <p class="max_min_detail">Max/Min</p>
         </div>
+    </div>
+        
     </div>
 
     <div class="weekly_forecast">
@@ -152,6 +153,7 @@
     <script src="errorHandling.js"></script>
     <script src="helpers.js"></script>
     <script src="app.js"></script>
-
+    <footer></footer>
 </body>
+
 </html>
