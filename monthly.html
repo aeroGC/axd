@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./styleAPI2.css">
+        <title>Weather Now 2</title>
+    </head>
+<body>
+    <header>
+        <div class="title_logo">
+            <div class="logo">
+                <a class="title_text" href="./indexAPI2.html">
+                    <img class="main_logo" src="/axd/logos_icons/main_logo.png" alt="Main logo">
+                </a>
+            </div>
+            <span>
+                <form class="searchBar">
+                    <div class="search_elements">
+                        <input type="text" class="cityInput" placeholder="Enter city">
+                        <button type="submit">Get Weather</button>
+                        <img src="./logos_icons/location.jpg" alt="Use Current Location" class="locationButton" title="Use Current Location" />
+                    </div>
+                    <ul class="suggestions"></ul>
+                </form>
+            </span>
+        </div>
+
+        <nav class="navigation">
+            <a class= "navigation_item" href="./indexAPI2.html">Home</a>
+            <a class= "navigation_item" href="./aboutus.html">About us</a>
+            <a class= "navigation_item" href="./contactus.html">Contact</a>
+            <a class= "navigation_item" href="./monthly.html">Monthly Forecast</a>
+        </nav>
+    </header>
+    <main>
+        <div class="city_name">City Name</div>
+        <div class="month_buttons">
+            <button>January</button>
+            <button>February</button>
+            <button>March</button>
+            <button>April</button>
+            <button>May</button>
+            <button>June</button>
+        </div>
+        <div class="previous_next">
+            <button class="prevMonth">Previous</button>
+            <h2 class="currentMonth">June 2024</h2>
+            <button class="nextMonth">Next</button>
+        </div>
+        <table class="calendar">
+            <thead>
+                <tr>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="empty"></td>
+                    <td>
+                        <div class="date_number">1</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>25°C / 15°C</div>
+                    </td>
+                    <td>
+                        <div class="date_number">2</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>23°C / 14°C</div>
+                    </td>
+                    <td>
+                        <div class="date_number">3</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>24°C / 13°C</div>
+                    </td>
+                    <td>
+                        <div class="date_number">4</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>22°C / 12°C</div>
+                    </td>
+                    <td>
+                        <div class="date_number">5</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>26°C / 16°C</div>
+                    </td>
+                    <td>
+                        <div class="date_number">5</div>
+                        <img src="/axd/logos_icons/moon1.svg" alt="Weather icon" class="weather-icon">
+                        <div>26°C / 16°C</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>26°C / 16°C</td>
+                    <td>25°C / 15°C</td>
+                    <td>23°C / 14°C</td>
+                    <td>24°C / 13°C</td>
+                    <td>22°C / 12°C</td>
+                    <td>26°C / 16°C</td>
+                    <td>26°C / 16°C</td>
+                </tr>
+                <tr>
+                    <td>26°C / 16°C</td>
+                    <td>25°C / 15°C</td>
+                    <td>23°C / 14°C</td>
+                    <td>24°C / 13°C</td>
+                    <td>22°C / 12°C</td>
+                    <td>26°C / 16°C</td>
+                    <td>26°C / 16°C</td>
+                </tr>
+                <tr>
+                    <td>26°C / 16°C</td>
+                    <td>25°C / 15°C</td>
+                    <td>23°C / 14°C</td>
+                    <td>24°C / 13°C</td>
+                    <td>22°C / 12°C</td>
+                    <td>26°C / 16°C</td>
+                    <td class="empty"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <script src="monthly.js"></script>
+</body>
+<style>
+:root {
+    --main_color: #4b216d;
+    --dark_purple: #893a8a;
+    --white_text-input: #FFFFFF;
+    --gray: #D9D9D9;
+}
+
+main {
+    margin: 2% 5%;
+}
+
+.city_name {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--main_color);
+}
+
+.month_buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.month_buttons button {
+    background-color: var(--main_color);
+    color: var(--white_text-input);
+    border: none;
+    padding: 0.8rem;
+    margin: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.month_buttons button:hover {
+    background-color: var(--dark_purple);
+}
+
+.previous_next{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.currentMonth {
+    font-size: 2rem;
+}
+
+.previous_next button {
+    background-color: var(--main_color);
+    color: var(--white_text-input);
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.previous_next button:hover {
+    background-color: var(--dark_purple);
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.calendar th,
+.calendar td {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    text-align: center;
+    vertical-align: top;
+}
+
+.calendar th {
+    background-color: var(--main_color);
+    color: var(--white_text-input);
+}
+
+.calendar td.empty {
+    background-color: #f0eaea;
+}
+.weather-icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin: 0.5rem auto;
+}
+
+.calendar td div {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+}
+
+.date_number {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+</style>
+</html>
