@@ -25,73 +25,9 @@ function getWeatherIcon(condition) {
 
 // Function to get the time of the city and display it on the chart.
 function getCurrentHourLabels(hourlyData) {
-    const labels = hourlyData.map(data => {
+    return hourlyData.map(data => {
         const date = new Date(data.time * 1000); // Convert to milliseconds
         const hours = date.getUTCHours(); // Get the hour in 24-hour format (UTC)
         return `${hours}h`;
     });
-    return labels;
 }
-
-// Function to fetch full country names
-async function fetchCountryNames() {
-    const response = await fetch('https://restcountries.com/v3.1/all');
-    if (!response.ok) {
-        throw new Error('Failed to fetch country data');
-    }
-    const countriesData = await response.json();
-    const countries = {};
-    countriesData.forEach(country => {
-        if (country.cca2) {
-            countries[country.cca2] = country.name.common;
-        }
-    });
-    return countries;
-}
-
-// Funciones existentes para obtener y mostrar el clima
-async function getWeatherDataByCity(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-        throw new Error("Could not fetch weather data");
-    }
-
-    return await response.json();
-
-    //lol
-}
-
-
-function initializeAutocomplete() {
-    const cityInput = document.querySelector(".cityInput");
-    const suggestions = document.querySelector(".suggestions");
-
-    const autocomplete = new google.maps.places.Autocomplete(cityInput, {
-        types: ['(cities)']
-    });
-
-    autocomplete.addListener('place_changed', function () {
-        const place = autocomplete.getPlace();
-        if (!place.geometry) {
-            console.log("No details available for input: '" + place.name + "'");
-            return;
-        }
-        // Clear the existing suggestions
-        suggestions.innerHTML = '';
-        // Display the selected place
-        cityInput.value = place.name; 
-        getWeatherDataByCity(place.name); // Call function to get weather
-    });
-
-    cityInput.addEventListener('input', function () {
-        if (cityInput.value.length < 3) {
-            suggestions.innerHTML = ''; // Clear suggestions if input is less than 3 characters
-        }
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    initializeAutocomplete();
-});

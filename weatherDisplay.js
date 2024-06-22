@@ -1,5 +1,5 @@
 async function displayWeatherInfo(data) {
-    const { name: city, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, coord: { lon, lat }, timezone } = data;
+    const { name: city, id: cityID, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, coord: { lon, lat }, timezone } = data;
     const weatherCondition = weather[0].description; // Get the weather description
     const iconCode = weather[0].icon; // Get the weather condition icon
 
@@ -52,7 +52,7 @@ async function displayWeatherInfo(data) {
     }
 
     // Display hourly temperature chart
-    fetchAndDisplayHourlyTemperature(city);
+    fetchAndDisplayHourlyTemperature(cityID);
 }
 
 
@@ -91,7 +91,7 @@ function displayDailyForecast(forecastData) {
         }
     });
 
-    // Create an array of 7 days from now
+    // Create an array of 5 days from now
     const forecastDays = [];
     for (let i = 1; i <= 5; i++) {
         const date = new Date(now.getTime() + i * 86400000);
@@ -141,9 +141,9 @@ function displayDailyForecast(forecastData) {
 
 
 
-async function fetchAndDisplayHourlyTemperature(city) {
+async function fetchAndDisplayHourlyTemperature(cityID) {
     try {
-        const hourlyData = await fetchHourlyTemperatureData(city);
+        const hourlyData = await fetchHourlyTemperatureDataByCityID(cityID);
         if (hourlyData) {
             displayHourlyTemperatureChart(hourlyData);
         } else {
