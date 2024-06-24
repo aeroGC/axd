@@ -211,7 +211,7 @@ main {
 }
 
 .weather_detailscontainer p {
-    font-size: 20px; /* Using viewport width to make font size responsive */   
+    font-size: 20px;  
     flex-basis: calc(33.33% - 20px);
     text-align: center;
 }
@@ -410,6 +410,8 @@ footer {
     .additional_box {
         width: 100%; /* Ensure full width on mobile */
         margin-bottom: 10px;
+        margin-right: 0;
+        
     }
 
     #box1, #box2, #box3 {
