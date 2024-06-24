@@ -35,6 +35,7 @@
 .searchBar {
     position: relative;
     display: inline-block; 
+}
 
 .search_elements {
     display: flex;
