@@ -183,9 +183,8 @@ main {
 }
 
 .weather_text h3 {
-    font-size: 50px; /* Adjusted the font size to be responsive */
+    font-size: 2rem; 
 }
-
 /*Weather Condition Icon*/
 .weather_icon {
     display: inline-block;
@@ -197,12 +196,11 @@ main {
 .weather_date,
 .weather_time,
 .weather_degrees {
-    font-size: 30px;
+    font-size: 1.5rem;
 }
 
 .weather_detailscontainer {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     color: var(--white_text-input);
@@ -214,8 +212,15 @@ main {
     font-size: 50%;
 }
 
+
+.weather_detailscontainer img {
+    width: 20px; /* Ensure consistent width for images */
+    height: 20px; /* Ensure consistent height for images */
+    margin-right: 5px; /* Space between image and text */
+}
+
 .weather_detailscontainer p {
-    font-size: 20px;  
+    font-size: 200%;  
     flex-basis: calc(33.33% - 20px);
     text-align: center;
 }
@@ -405,14 +410,19 @@ footer {
     }
 
     .additional_boxes {
-        flex-direction: column; /* Stack additional boxes vertically */
-        align-items: center;
-        width: 100%; /* Full width for additional boxes */
+        flex-direction: column; 
+        align-items: center; 
     }
 
     .additional_box {
-        width: 100%; /* Full width for each additional box */
-        margin-bottom: 10px; /* Adjust spacing */
+        width: 100%; 
+        margin-bottom: 20px; /* Adjust spacing between boxes */
+    }
+
+    #box1, #box2,
+    #box3 {
+        width: 100%; /* Make boxes take full width on mobile */
+        height: auto; /* Let the height adjust based on content */
         margin-right: 0; /* Remove right margin */
     }
 
