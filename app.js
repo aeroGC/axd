@@ -84,6 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const weatherData = await getWeatherDataByCityID(cityID);
             displayWeatherInfo(weatherData);
+            
+            // Fetch and display the 5-day forecast
+            const city = weatherData.name;
+            const dailyForecast = await getDailyForecast(city);
+            if (dailyForecast) {
+                displayDailyForecast(dailyForecast);
+            } else {
+                displayError("Could not fetch daily forecast. Please try again later.");
+            }
         } catch (error) {
             console.error(error);
             displayError("Could not fetch weather data. Please try again later.");

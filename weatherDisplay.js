@@ -58,6 +58,33 @@ async function displayWeatherInfo(data) {
         weatherOverviewElement.innerHTML = 'Could not fetch the weather overview.';
     }
 
+    async function fetchAndDisplaySunMoonTimes(lat, lon, timezoneOffset) {
+        const sunMoonData = await getSunMoonTimes(lat, lon);
+        if (sunMoonData) {
+            const convertToCityTime = (utcSeconds) => {
+                // Apply the timezone offset correctly
+                return new Date((utcSeconds + timezoneOffset - 7200) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            };
+    
+            const sunriseTime = convertToCityTime(sunMoonData.daily[0].sunrise);
+            const sunsetTime = convertToCityTime(sunMoonData.daily[0].sunset);
+            const moonriseTime = convertToCityTime(sunMoonData.daily[0].moonrise);
+            const moonsetTime = convertToCityTime(sunMoonData.daily[0].moonset);
+    
+            document.querySelector('.sunrise_time').innerHTML = sunriseTime;
+            document.querySelector('.sunset_time').innerHTML = sunsetTime;
+            document.querySelector('.moonrise_time').innerHTML = moonriseTime;
+            document.querySelector('.moonset_time').innerHTML = moonsetTime;
+        } else {
+            document.querySelector('.sunrise_time').innerHTML = '--:--';
+            document.querySelector('.sunset_time').innerHTML = '--:--';
+            document.querySelector('.moonrise_time').innerHTML = '--:--';
+            document.querySelector('.moonset_time').innerHTML = '--:--';
+        }
+    }
+
+    await fetchAndDisplaySunMoonTimes(lat, lon, timezone);
+
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(cityID);
 }
@@ -65,86 +92,45 @@ async function displayWeatherInfo(data) {
 
 
 function displayDailyForecast(forecastData) {
-    const weeklyForecast = document.querySelectorAll('.day_forecast'); // Get all existing day_forecast divs
+    const weeklyForecast = document.querySelectorAll('.day_forecast');
 
     if (weeklyForecast.length !== 5) {
         console.error("There should be exactly 5 '.day_forecast' elements in the HTML.");
         return;
     }
 
-    const now = new Date();
-    now.setHours(0, 0, 0, 0); // Set to start of today
-    const nextDayTimestamp = now.getTime() + 86400000; // Get timestamp for the start of tomorrow
-
-    // Group forecast data by day
     const daysData = {};
     forecastData.list.forEach(entry => {
         const entryDate = new Date(entry.dt * 1000);
         const entryDay = entryDate.toLocaleDateString('en-US', { weekday: 'long' });
-        const entryDayNumber = entryDate.getDate();
-        const weatherCondition = entry.weather[0].description;
         const iconCode = entry.weather[0].icon;
 
-        if (entryDate.getTime() >= nextDayTimestamp) {
-            if (!daysData[entryDay]) {
-                daysData[entryDay] = {
-                    dayNumber: entryDayNumber,
-                    temps: [],
-                    icon: iconCode, // Add icon code
-                    condition: weatherCondition // Add weather condition
-                };
-            }
-            daysData[entryDay].temps.push(entry.main.temp);
+        if (!daysData[entryDay]) {
+            daysData[entryDay] = {
+                temps: [],
+                icon: iconCode
+            };
         }
+        daysData[entryDay].temps.push(entry.main.temp);
     });
 
-    // Create an array of 5 days from now
-    const forecastDays = [];
-    for (let i = 1; i <= 5; i++) {
-        const date = new Date(now.getTime() + i * 86400000);
-        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
-        const dayNumber = date.getDate();
+    const forecastDays = Object.keys(daysData).slice(0, 5);
 
-        if (daysData[dayName]) {
-            forecastDays.push({
-                day: dayName,
-                dayNumber: dayNumber,
-                temps: daysData[dayName].temps,
-                icon: daysData[dayName].icon, // Include icon
-                condition: daysData[dayName].condition // Include weather condition
-            });
-        } else {
-            // Handle the case where forecast data might not be available for some days
-            forecastDays.push({
-                day: dayName,
-                dayNumber: dayNumber,
-                temps: [],
-                icon: null, // No icon available
-                condition: '' // No condition available
-            });
-        }
-    }
+    forecastDays.forEach((day, index) => {
+        const temps = daysData[day].temps;
+        const maxTemp = Math.round(Math.max(...temps));
+        const minTemp = Math.round(Math.min(...temps));
 
-    forecastDays.forEach((dayData, index) => {
-        const temps = dayData.temps;
-        const maxTemp = temps.length > 0 ? Math.round(Math.max(...temps) - 273.15) : 'N/A'; // Convert max temp to Celsius and round
-        const minTemp = temps.length > 0 ? Math.round(Math.min(...temps) - 273.15) : 'N/A'; // Convert min temp to Celsius and round
-
-        // Update the existing divs with new data
         const dayForecast = weeklyForecast[index];
-        dayForecast.querySelector('.day_name').textContent = dayData.day;
-        dayForecast.querySelector('.day_date').textContent = dayData.dayNumber;
+        dayForecast.querySelector('.day_name').textContent = day;
         dayForecast.querySelector('.day_temp').textContent = `${maxTemp}°/${minTemp}°`;
-        
-        // Set the weather condition icon
+
+        // Set personalized weather icon
         const dayIcon = dayForecast.querySelector('.day_icon');
-        if (dayData.icon) {
-            dayIcon.src = `http://openweathermap.org/img/wn/${dayData.icon}@2x.png`; // Use OpenWeatherMap icons
-        } else {
-            dayIcon.src = ''; // Clear icon if not available
-        }
+        dayIcon.src = getWeatherConditionIcon(daysData[day].icon);
     });
 }
+
 
 
 

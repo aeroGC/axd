@@ -23,6 +23,32 @@ function getWeatherIcon(condition) {
     }
 }
 
+// Function to map weather conditions to icons
+function getWeatherConditionIcon(iconCode) {
+    const Icons = {
+        "01d": "/axd/logos_icons/weather_condition_icons/clear_sky.svg",
+        "01n": "/axd/logos_icons/weather_condition_icons/clear_sky.svg",
+        "02d": "/axd/logos_icons/weather_condition_icons/few_clouds.svg",
+        "02n": "/axd/logos_icons/weather_condition_icons/few_clouds.svg",
+        "03d": "/axd/logos_icons/weather_condition_icons/cloudy.svg",
+        "03n": "/axd/logos_icons/weather_condition_icons/cloudy.svg",
+        "04d": "/axd/logos_icons/weather_condition_icons/cloudy.svg",
+        "04n": "/axd/logos_icons/weather_condition_icons/cloudy.svg",
+        "09d": "/axd/logos_icons/weather_condition_icons/shower_rain.svg",
+        "09n": "/axd/logos_icons/weather_condition_icons/shower_rain.svg",
+        "10d": "/axd/logos_icons/weather_condition_icons/rain.svg",
+        "10n": "/axd/logos_icons/weather_condition_icons/rain.svg",
+        "11d": "/axd/logos_icons/weather_condition_icons/thunderstorm.svg",
+        "11n": "/axd/logos_icons/weather_condition_icons/thunderstorm.svg",
+        "13d": "/axd/logos_icons/weather_condition_icons/snow.svg",
+        "13n": "/axd/logos_icons/weather_condition_icons/snow.svg",
+        "50d": "/axd/logos_icons/weather_condition_icons/snow.svg",
+        "50n": "/axd/logos_icons/weather_condition_icons/snow.svg"
+    };
+    return Icons[iconCode] || "/axd/logos_icons/weather_condition/default.png";
+}
+
+
 // Function to get the time of the city and display it on the chart.
 function getCurrentHourLabels(hourlyData) {
     return hourlyData.map(data => {

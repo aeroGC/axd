@@ -41,7 +41,7 @@ async function getWeatherOverview(lat, lon) {
 }
 
 async function getDailyForecast(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -53,6 +53,8 @@ async function getDailyForecast(city) {
         return null;
     }
 }
+
+
 
 async function fetchHourlyTemperatureDataByCityID(cityID) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&appid=${apiKey}`;
@@ -72,3 +74,16 @@ async function fetchHourlyTemperatureDataByCityID(cityID) {
     }));
 }
 
+async function getSunMoonTimes(lat, lon) {
+    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("Unable to fetch sun and moon times.");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching sun and moon times:", error);
+        return null;
+    }
+}
