@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 :root {
@@ -116,7 +117,7 @@ button {
 }
 
 main {
-    margin: 0 5% 2% 5%;
+    margin: 3% 5% 2% 5%;
 }
 .main_content {
     display: flex;
@@ -126,109 +127,135 @@ main {
 }
 .weather_container { /*Container*/
     position: relative;
-    flex: 1 1 60%;
-    margin-right: 2%;
-    box-sizing: border-box;
+    margin-right: 20px;
+    width: 100%;
+    height: 25rem; /* Ensuring the container height matches the image */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .weather_visualizer { /* main image */
-    position: relative;
-    width: 100%;
-    height: 25rem;
-    border-radius: 12px;
-    display: block;
-}
-.weather_text { /* main text of the weather visualizer : degrees, date, time */
     position: absolute;
-    top: 10px;
-    left: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    z-index: 0;
+}
+
+.half1, .half2 {
+    position: absolute;
+    width: 100%;
+    z-index: 1; /* Ensuring the content appears above the image */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.half1 {
+    height: 70%;
+    top: 0;
+    padding: 10px;
+    margin-left: 50px;
+}
+
+.half2 {
+    height: 30%;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.weather_text { /* main text of the weather visualizer : degrees, date, time */
     color: var(--white_text-input);
     padding: 10px;
     border-radius: 10px;
     z-index: 1;
     max-width: calc(100% - 20px); /* Ensuring the text fits inside the container */
     word-wrap: break-word; /* Allowing long words to break and wrap onto the next line */
-    font-size: 4vw;
+    font-size: 20px;
 }
 
 .weather_text h3 {
-    font-size: 5vw; /* Adjusted the font size to be responsive */
-    margin:  0 0 10px 0;
+    font-size: 50px; /* Adjusted the font size to be responsive */
 }
-
 
 /*Weather Condition Icon*/
 .weather_icon {
     display: inline-block;
-    width: 40px; 
-    height: 40px;
-    vertical-align: top; 
-    margin-left: 8px; /* Add some space between the text and the icon */
+    width: 30px; /* Adjust the width to be responsive and match the font size */
+    height: auto; /* Automatically adjust height based on width */
+    vertical-align: middle; /* Align vertically with text */
 }
 
 .weather_date,
 .weather_time,
 .weather_degrees {
-    font-size: 2vw; /* Adjusted the font size to be responsive */
+    font-size: 30px;
 }
+
 .weather_detailscontainer {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     color: var(--white_text-input);
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 20px;
+    height: 30%;
     width: 80%; /* Adjusted width to fit inside the weather visualizer */
-    max-width: 80%; /* Added max-width to ensure it doesn't exceed the container */
-    z-index: 1;
     font-size: 50%;
 }
+
 .weather_detailscontainer p {
-    font-size: 1.5vw; /* Using viewport width to make font size responsive */   
+    font-size: 20px; /* Using viewport width to make font size responsive */   
     flex-basis: calc(33.33% - 20px);
     text-align: center;
 }
-
 .weekly_forecast {
     position: relative;
-    z-index: 1;
-    flex: 1 1 35%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding: 1rem;
-    background-color: var(--main_color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5;
     border-radius: 15px;
     box-sizing: border-box;
 }
 
 .day_forecast {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space out items */
+    align-items: center; /* Center items vertically */
     padding: 0.5rem 1rem;
     margin: 0.5rem 0;
-    background-color: var(--dark_purple);
+    background-color: #ffffff; 
     border-radius: 10px;
-    color: var(--white_text-input);
 }
 
 .date_name {
     display: flex;
+    flex-direction: column; /* Align date and name vertically */
     gap: 0.4rem; /* Space between date and name */
+    flex: 1; /* Take up remaining space */
 }
 
 .day_icon {
-    width: 40px; /* Adjust size as needed */
+    width: 40px; 
     height: 40px;
+    margin-left: auto; /* Push icon to the right */
 }
 
-.day_name,
 .day_temp {
-    font-size: 1rem; 
+    font-size: 1rem;
+    margin-left: 1rem; /* Space between icon and temp */
+    margin-right: 0; /* Align temp to the right */
+    text-align: right;
 }
 
 .error {
@@ -241,17 +268,17 @@ main {
 .additional_boxes {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 30px;
+    
 }
-
 .additional_box {
     background-color: grey;
     padding: 10px;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    margin-right: 20px; /*it makes margin to the border, I will change later*/
+    margin-right: 20px;   
 }
-
 
 #box1 {
     width: 60%;
@@ -291,7 +318,7 @@ main {
 .moonset_container{
     height: 85px;
     width: 70px;
-    background-color: grey;
+    background-color: rgb(194, 186, 186);
     border-radius: 10px;
     box-sizing: border-box;
     text-align: center;
@@ -305,13 +332,13 @@ main {
 #box2{
     width: 20%;
     height: 250px;
-    background-color: grey;
+    background-color: rgb(194, 186, 186);
 }
 
 #box3{
     width: 20%;
     height: 250px;
-    background-color: grey;
+    background-color: rgb(194, 186, 186);
     font-size: 20px;
     overflow-y:auto;
 }
@@ -377,12 +404,12 @@ footer {
         flex-direction: column;
         align-items: center;
         width: 100%; /* Ensure full width on mobile */
+        
     }
 
     .additional_box {
         width: 100%; /* Ensure full width on mobile */
         margin-bottom: 10px;
-        margin-right: 0; /* Remove right margin */
     }
 
     #box1, #box2, #box3 {
