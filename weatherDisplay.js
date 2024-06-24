@@ -92,44 +92,79 @@ async function displayWeatherInfo(data) {
 
 
 function displayDailyForecast(forecastData) {
-    const weeklyForecast = document.querySelectorAll('.day_forecast');
-
+    const weeklyForecast = document.querySelectorAll('.day_forecast'); // Get all existing day_forecast divs
     if (weeklyForecast.length !== 5) {
         console.error("There should be exactly 5 '.day_forecast' elements in the HTML.");
         return;
     }
-
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set to start of today
+    const nextDayTimestamp = now.getTime() + 86400000; // Get timestamp for the start of tomorrow
+    // Group forecast data by day
     const daysData = {};
     forecastData.list.forEach(entry => {
         const entryDate = new Date(entry.dt * 1000);
         const entryDay = entryDate.toLocaleDateString('en-US', { weekday: 'long' });
+        const entryDayNumber = entryDate.getDate();
+        const weatherCondition = entry.weather[0].description;
         const iconCode = entry.weather[0].icon;
-
-        if (!daysData[entryDay]) {
-            daysData[entryDay] = {
-                temps: [],
-                icon: iconCode
-            };
+        if (entryDate.getTime() >= nextDayTimestamp) {
+            if (!daysData[entryDay]) {
+                daysData[entryDay] = {
+                    dayNumber: entryDayNumber,
+                    temps: [],
+                    icon: iconCode, // Add icon code
+                    condition: weatherCondition // Add weather condition
+                };
+            }
+            daysData[entryDay].temps.push(entry.main.temp);
         }
-        daysData[entryDay].temps.push(entry.main.temp);
     });
-
-    const forecastDays = Object.keys(daysData).slice(0, 5);
-
-    forecastDays.forEach((day, index) => {
-        const temps = daysData[day].temps;
-        const maxTemp = Math.round(Math.max(...temps));
-        const minTemp = Math.round(Math.min(...temps));
-
+    // Create an array of 5 days from now
+    const forecastDays = [];
+    for (let i = 1; i <= 5; i++) {
+        const date = new Date(now.getTime() + i * 86400000);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+        const dayNumber = date.getDate();
+        if (daysData[dayName]) {
+            forecastDays.push({
+                day: dayName,
+                dayNumber: dayNumber,
+                temps: daysData[dayName].temps,
+                icon: daysData[dayName].icon, // Include icon
+                condition: daysData[dayName].condition // Include weather condition
+            });
+        } else {
+            // Handle the case where forecast data might not be available for some days
+            forecastDays.push({
+                day: dayName,
+                dayNumber: dayNumber,
+                temps: [],
+                icon: null, // No icon available
+                condition: '' // No condition available
+            });
+        }
+    }
+    forecastDays.forEach((dayData, index) => {
+        const temps = dayData.temps;
+        const maxTemp = temps.length > 0 ? Math.round(Math.max(...temps)) : 'N/A'; // Convert max temp to Celsius and round
+        const minTemp = temps.length > 0 ? Math.round(Math.min(...temps)) : 'N/A'; // Convert min temp to Celsius and round
+        // Update the existing divs with new data
         const dayForecast = weeklyForecast[index];
-        dayForecast.querySelector('.day_name').textContent = day;
+        dayForecast.querySelector('.day_name').textContent = dayData.day;
+        dayForecast.querySelector('.day_date').textContent = dayData.dayNumber;
         dayForecast.querySelector('.day_temp').textContent = `${maxTemp}°/${minTemp}°`;
-
-        // Set personalized weather icon
+        
+        // Set the weather condition icon
         const dayIcon = dayForecast.querySelector('.day_icon');
-        dayIcon.src = getWeatherConditionIcon(daysData[day].icon);
+        if (dayData.icon) {
+            dayIcon.src = getWeatherConditionIcon(dayData.icon); // Use custom weather icons
+        } else {
+            dayIcon.src = ''; // Clear icon if not available
+        }
     });
 }
+
 
 
 
