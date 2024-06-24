@@ -64,7 +64,7 @@ button, .locationButton {
     border: 0px solid #ccc;
     max-height: 150px;
     overflow-y: auto;
-    position: relative;
+    position: absolute;
     background-color: #fff;
     width: 200px;
     z-index: 0;
