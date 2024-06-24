@@ -32,15 +32,39 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch('/axd/city.list.json');
             const cities = await response.json();
-            return cities.filter(city => city.name.toLowerCase().startsWith(query.toLowerCase()));
+            const filteredCities = cities.filter(city => city.name.toLowerCase().includes(query.toLowerCase()));
+
+            filteredCities.sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                if (nameA.startsWith(query.toLowerCase()) && !nameB.startsWith(query.toLowerCase())) {
+                    return -1;
+                }
+                if (!nameA.startsWith(query.toLowerCase()) && nameB.startsWith(query.toLowerCase())) {
+                    return 1;
+                }
+                return nameA.localeCompare(nameB);
+            });
+
+            const uniqueCities = [];
+            const cityNames = new Set();
+            for (const city of filteredCities) {
+                if (!cityNames.has(city.name)) {
+                    uniqueCities.push(city);
+                    cityNames.add(city.name);
+                }
+            }
+
+            return uniqueCities.slice(0, 10);
         } catch (error) {
             console.error("Error fetching cities:", error);
             return [];
         }
     }
-    
+
     function renderSuggestions(citySuggestions) {
-        suggestionsList.innerHTML = ''; // Clear previous suggestions
+        const fragment = document.createDocumentFragment();
+        suggestionsList.innerHTML = '';
 
         citySuggestions.forEach(suggestion => {
             const listItem = document.createElement('li');
@@ -50,8 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 suggestionsList.innerHTML = '';
                 fetchWeatherByCityID(suggestion.id);
             });
-            suggestionsList.appendChild(listItem);
+            fragment.appendChild(listItem);
         });
+
+        suggestionsList.appendChild(fragment);
     }
 
     async function fetchWeatherByCityID(cityID) {
@@ -65,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initializeAutocomplete() {
-        cityInput.addEventListener('input', async function () {
+        cityInput.addEventListener('input', debounce(async function () {
             const query = cityInput.value.trim();
             if (query.length >= 3) {
                 const citySuggestions = await fetchCities(query);
@@ -73,10 +99,17 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 suggestionsList.innerHTML = '';
             }
+        }, 300));
+
+        // Select all text on focus
+        cityInput.addEventListener('focus', function () {
+            cityInput.select();
         });
     }
 
     locationButton.addEventListener('click', function () {
+        cityInput.value=``;
+        suggestionsList.innerHTML = ``;
         getWeatherForCurrentLocation();
     });
 

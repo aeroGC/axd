@@ -60,13 +60,13 @@ button, .locationButton {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    border: 1px solid #ccc;
+    border: 0px solid #ccc;
     max-height: 150px;
     overflow-y: auto;
-    position: absolute;
+    position: relative;
     background-color: #fff;
     width: 200px;
-    z-index: -1;
+    z-index: 0;
 }
 
 .suggestions li {
@@ -315,6 +315,37 @@ main {
     font-size: 20px;
     overflow-y:auto;
 }
+
+/* WebKit Browsers */
+#box3::-webkit-scrollbar {
+    width: 12px; /* Width of the entire scrollbar */
+}
+  
+#box3::-webkit-scrollbar-track {
+    background: #ffffff; /* Color of the scrollbar track */
+    border-radius: 10px;
+}
+  
+#box3::-webkit-scrollbar-thumb {
+    background-color: #383636; /* Color of the scrollbar handle */
+    border-radius: 10px;
+    border: 3px solid #f1f1f1; /* Padding around the handle */
+}
+  
+#box3::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color when hovering over the scrollbar handle */
+}
+  
+/* Firefox */
+#box3 {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: #888 #f1f1f1; /* Scrollbar handle and track color */
+}
+.weather_overview{
+    font-size: 1rem;
+}
+
+
 footer {
     background-color: var(--main_color);
     height: 5rem;

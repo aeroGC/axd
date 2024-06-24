@@ -27,7 +27,7 @@ async function getWeatherDataByCityID(cityID) {
 
 // Get weather Overview
 async function getWeatherOverview(lat, lon) {
-    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall/overview?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall/overview?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
