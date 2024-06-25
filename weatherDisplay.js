@@ -15,7 +15,7 @@ async function displayWeatherInfo(data) {
     const weatherDegrees = document.querySelector('.weather_degrees');
     const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon background element
     const weatherIcon = document.querySelector('.weather_icon'); // Get weather condition icon
-    const weatherOverviewElement = document.querySelector('.weather_overview'); // Get weather overview element
+    //const weatherOverviewElement = document.querySelector('.weather_overview'); // Get weather overview element
 
     weatherCity.innerHTML = `${city}, ${country}`;
 
@@ -37,11 +37,14 @@ async function displayWeatherInfo(data) {
     weatherVisualizer.src = getWeatherIcon(weatherCondition);
 
     // Display weather details
-    const feels_like_celsius = Math.round((feels_like - 273.15).toFixed(1));
 
-    // Humidity
-    const weatherDetail = document.querySelector(`.humidity_detail`);
-    weatherDetail.innerHTML = `Humidity: ${humidity}%`;
+    // Weather Condition
+    const weatherConditionDetail = document.querySelector('.weather_description');
+    weatherConditionDetail.innerHTML = `Weather Condition: ${weatherCondition}`;
+
+
+    //Convert from Kelvin to Celcius
+    const feels_like_celsius = Math.round((feels_like - 273.15).toFixed(1));
     // Feels Like
     const feelsLikeDetail = document.querySelector('.feels_like_detail');
     feelsLikeDetail.innerHTML = `Feels Like: ${feels_like_celsius}°C`;
@@ -50,15 +53,30 @@ async function displayWeatherInfo(data) {
     const maxMinDetail = document.querySelector('.max_min_detail');
     maxMinDetail.innerHTML = `Max/Min: ${celsiusTemp_max}°/${celsiusTemp_min}°`;
 
+
+
     // Box 3 Details
+    // Humidity
+    const weatherHumidity = document.querySelector(`.humidity_detail`);
+    weatherHumidity.innerHTML = `Humidity: ${humidity}%`;
+
+    //Pressure
+    const weatherPressure = document.querySelector(`.pressure_detail`);
+    weatherPressure.innerHTML = `Pressure: ${pressure} hPa`;
+
+    //Wind
+    const weatherWind = document.querySelector(`.wind_detail`);
+    weatherWind.innerHTML = `Wind: ${speed} m/s at ${deg}°`;
     
+
+
     // Fetch and display the weather overview
-    const weatherOverviewData = await getWeatherOverview(lat, lon, apiKey);
-    if (weatherOverviewData) {
-        weatherOverviewElement.innerHTML = weatherOverviewData.weather_overview;
-    } else {
-        weatherOverviewElement.innerHTML = 'Could not fetch the weather overview.';
-    }
+    //const weatherOverviewData = await getWeatherOverview(lat, lon, apiKey);
+    //if (weatherOverviewData) {
+       // weatherOverviewElement.innerHTML = weatherOverviewData.weather_overview;
+    //} else {
+       // weatherOverviewElement.innerHTML = 'Could not fetch the weather overview.';
+    //}
 
     async function fetchAndDisplaySunMoonTimes(lat, lon, timezoneOffset) {
         const sunMoonData = await getSunMoonTimes(lat, lon);
