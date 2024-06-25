@@ -184,6 +184,7 @@ main {
 
 .weather_text h3 {
     font-size: 2rem; 
+    margin-bottom: 1.5%;
 }
 /*Weather Condition Icon*/
 .weather_icon {
@@ -192,11 +193,26 @@ main {
     height: auto; /* Automatically adjust height based on width */
     vertical-align: middle; /* Align vertically with text */
 }
-
 .weather_date,
 .weather_time,
 .weather_degrees {
     font-size: 1.5rem;
+}
+
+.toggle-btn { /* fahrenheit/celcius*/
+    background-color: transparent; 
+    color: #fff; 
+    opacity: 1;
+    border: none; 
+    padding: 7px; 
+    font-size: 0.7rem; 
+    cursor: pointer; 
+    border-radius: 10px; 
+    transition: background-color 0.3s ease; 
+    
+}
+.toggle-btn:hover {
+    background-color: #2980b9; /* Change background color on hover */
 }
 
 .weather_detailscontainer {
@@ -355,39 +371,25 @@ main {
     width: 20%;
     height: 250px;
     background-color: rgb(194, 186, 186);
-    font-size: 20px;
-    overflow-y:auto;
+}
+#box3 div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between each icon and text */
 }
 
-/* WebKit Browsers */
-#box3::-webkit-scrollbar {
-    width: 12px; /* Width of the entire scrollbar */
-}
-  
-#box3::-webkit-scrollbar-track {
-    background: #ffffff; /* Color of the scrollbar track */
-    border-radius: 10px;
-}
-  
-#box3::-webkit-scrollbar-thumb {
-    background-color: #383636; /* Color of the scrollbar handle */
-    border-radius: 10px;
-    border: 3px solid #f1f1f1; /* Padding around the handle */
-}
-  
-#box3::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color when hovering over the scrollbar handle */
-}
-  
-/* Firefox */
-#box3 {
-    scrollbar-width: thin; /* "auto" or "thin" */
-    scrollbar-color: #888 #f1f1f1; /* Scrollbar handle and track color */
-}
-.weather_overview{
-    font-size: 1rem;
+#box3 img {
+    margin-right: 10px; /* Adjust spacing between icon and text */
+    vertical-align: middle; /* Ensure proper alignment */
 }
 
+#box3 .humidity_detail,
+#box3 .pressure_detail,
+#box3 .wind_detail {
+    margin: 1% 0 1% 0;
+    
+    
+}
 
 footer {
     background-color: var(--main_color);
@@ -433,7 +435,5 @@ footer {
         margin-right: 0; /* Remove right margin */
     }
 
-    #box3 {
-        overflow-y: hidden; /* Hide scrollbar on mobile */
-    }
+    
 }
