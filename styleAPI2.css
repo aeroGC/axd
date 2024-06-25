@@ -202,7 +202,7 @@ main {
 .toggle-btn { /* fahrenheit/celcius*/
     background-color: transparent; 
     color: #fff; 
-    opacity: 1;
+    opacity: 50%;
     border: none; 
     padding: 7px; 
     font-size: 0.7rem; 
