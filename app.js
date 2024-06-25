@@ -1,7 +1,58 @@
+let isFahrenheit = false;
+
 document.addEventListener("DOMContentLoaded", function () {
     const cityInput = document.querySelector(".cityInput");
     const suggestionsList = document.querySelector(".suggestions");
     const locationButton = document.querySelector(".locationButton");
+    const weatherDegrees = document.querySelector(".weather_degrees"); 
+    const dailyForecasts = document.querySelectorAll(".day_temp"); 
+
+       //convert C° to F°
+       function celsiusToFahrenheit(celsius) {
+        return (celsius * 9 / 5) + 32;
+    }
+
+     // update Temperatures according to the units 
+     function updateTemperatures() {
+        //const temperatureElements = [weatherDegrees, ...dailyForecasts];
+        const temperatureElements = [document.querySelector('.weather_degrees'), ...document.querySelectorAll('.day_temp')];
+
+        temperatureElements.forEach(element => {
+            const originalTemp = parseFloat(element.dataset.originalTemp); // Obtener temperatura original
+            let currentTemp = parseFloat(element.textContent); // Obtener la temperatura actual como número
+
+             // Si originalTemp no está definido, saltar al siguiente elemento
+            /*if (!originalTemp) return;
+            const [maxTempCelsius, minTempCelsius] = originalTemp.split('/').map(temp => parseFloat(temp));
+
+            if (isFahrenheit) {
+                const maxTempFahrenheit = celsiusToFahrenheit(maxTempCelsius);
+                const minTempFahrenheit = celsiusToFahrenheit(minTempCelsius);
+                element.textContent = `${maxTempFahrenheit.toFixed(1)}°/${minTempFahrenheit.toFixed(1)}°F`;
+            } else {
+                // show celcius ( original value)
+                element.textContent = `${maxTempCelsius.toFixed(1)}°/${minTempCelsius.toFixed(1)}°C`;
+                }*/
+            if (isFahrenheit) {
+                    // Convertir de Celsius a Fahrenheit
+                if (!element.dataset.originalTemp) {
+                        element.dataset.originalTemp = currentTemp; // Guardar el valor original si es la primera conversión
+                }
+                    currentTemp = celsiusToFahrenheit(originalTemp);
+                    element.textContent = `${currentTemp.toFixed(1)}°F`;
+                } else {
+                    // Mostrar en Celsius (valor original)
+                    element.textContent = `${originalTemp.toFixed(1)}°C`;
+                    }
+        });
+    }   
+    // Evento click para el botón de cambio entre Celsius y Fahrenheit
+    const toggleButton = document.getElementById("toggleFahrenheit");
+    toggleButton.addEventListener('click', function () {
+        isFahrenheit = !isFahrenheit; // Alternar entre Celsius y Fahrenheit
+        updateTemperatures(); // Actualizar las temperaturas mostradas
+        toggleButton.classList.toggle('active'); // Cambiar el estado visual del botón
+    });
 
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {

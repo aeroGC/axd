@@ -27,6 +27,8 @@ async function displayWeatherInfo(data) {
     // Display temperature
     const celsiusTemp = Math.round((temp - 273.15).toFixed(1));
     weatherDegrees.innerHTML = `${celsiusTemp}°C`;
+    weatherDegrees.dataset.originalTemp = celsiusTemp; 
+
 
     // Fetch the weather icon information
     weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`; // Using 2x size for better resolution
@@ -100,6 +102,7 @@ function displayDailyForecast(forecastData) {
     const now = new Date();
     now.setHours(0, 0, 0, 0); // Set to start of today
     const nextDayTimestamp = now.getTime() + 86400000; // Get timestamp for the start of tomorrow
+    
     // Group forecast data by day
     const daysData = {};
     forecastData.list.forEach(entry => {
@@ -108,6 +111,7 @@ function displayDailyForecast(forecastData) {
         const entryDayNumber = entryDate.getDate();
         const weatherCondition = entry.weather[0].description;
         const iconCode = entry.weather[0].icon;
+        
         if (entryDate.getTime() >= nextDayTimestamp) {
             if (!daysData[entryDay]) {
                 daysData[entryDay] = {
@@ -154,6 +158,9 @@ function displayDailyForecast(forecastData) {
         dayForecast.querySelector('.day_name').textContent = dayData.day;
         dayForecast.querySelector('.day_date').textContent = dayData.dayNumber;
         dayForecast.querySelector('.day_temp').textContent = `${maxTemp}°/${minTemp}°`;
+
+        dayForecast.querySelector('.day_temp').dataset.originalTemp = `${maxTemp}°/${minTemp}°`; // Guardar la temperatura original
+
         
         // Set the weather condition icon
         const dayIcon = dayForecast.querySelector('.day_icon');
