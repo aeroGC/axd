@@ -69,7 +69,7 @@ async function fetchHourlyTemperatureDataByCityID(cityID) {
     const timezoneOffset = data.city.timezone;
 
     // Extract the next 48 hours of data and adjust the time for the city's timezone
-    return data.list.slice(0, 16).map(current => ({
+    return data.list.slice(0, 9).map(current => ({
         temp: current.main.temp,
         time: current.dt + timezoneOffset
     }));

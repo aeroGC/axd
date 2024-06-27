@@ -14,34 +14,43 @@ document.addEventListener("DOMContentLoaded", function () {
         return (celsius * 9 / 5) + 32;
     }
 
-    // Update Temperatures according to the units 
-    function updateTemperatures() {
-        const temperatureElements = [document.querySelector('.weather_degrees'), ...document.querySelectorAll('.day_temp')];
+// Update Temperatures according to the units 
+function updateTemperatures() {
+    const temperatureElements = [document.querySelector('.weather_degrees'), ...document.querySelectorAll('.day_temp')];
 
-        temperatureElements.forEach(element => {
-            const originalTemp = element.dataset.originalTemp; // Get the original temperature
-            if (!originalTemp.includes('/')) {
-                // Single temperature (for the main weather visualizer)
-                let currentTemp = parseFloat(originalTemp);
-                if (isFahrenheit) {
-                    currentTemp = celsiusToFahrenheit(currentTemp);
-                    element.textContent = `${Math.round(currentTemp)}°F`;
-                } else {
-                    element.textContent = `${Math.round(currentTemp)}°C`;
-                }
+    temperatureElements.forEach(element => {
+        const originalTemp = element.dataset.originalTemp; // Get the original temperature
+        if (!originalTemp.includes('/')) {
+            // Single temperature (for the main weather visualizer)
+            let currentTemp = parseFloat(originalTemp);
+            if (isFahrenheit) {
+                currentTemp = celsiusToFahrenheit(currentTemp);
+                element.textContent = `${Math.round(currentTemp)}°F`;
             } else {
-                // Max/Min temperatures (for the weekly forecast)
-                let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
-                if (isFahrenheit) {
-                    maxTemp = celsiusToFahrenheit(maxTemp);
-                    minTemp = celsiusToFahrenheit(minTemp);
-                    element.textContent = `${Math.round(maxTemp)}°F/${Math.round(minTemp)}°F`;
-                } else {
-                    element.textContent = `${Math.round(maxTemp)}°C/${Math.round(minTemp)}°C`;
-                }
+                element.textContent = `${Math.round(currentTemp)}°C`;
             }
+        } else {
+            // Max/Min temperatures (for the weekly forecast)
+            let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
+            if (isFahrenheit) {
+                maxTemp = celsiusToFahrenheit(maxTemp);
+                minTemp = celsiusToFahrenheit(minTemp);
+                element.textContent = `${Math.round(maxTemp)}°F/${Math.round(minTemp)}°F`;
+            } else {
+                element.textContent = `${Math.round(maxTemp)}°C/${Math.round(minTemp)}°C`;
+            }
+        }
+    });
+
+    // Update hourly chart temperatures
+    if (hourlyTemperatureChart) {
+        hourlyTemperatureChart.data.datasets[0].data = hourlyTemperatureChart.data.datasets[0].data.map(temp => {
+            return isFahrenheit ? celsiusToFahrenheit(temp) : (temp - 32) * 5 / 9;
         });
+        hourlyTemperatureChart.options.scales.y.title.text = `Temperature (${isFahrenheit ? '°F' : '°C'})`;
+        hourlyTemperatureChart.update();
     }
+}
 
     // Event click for the toggle button between Celsius and Fahrenheit
     const toggleButton = document.getElementById("toggleFahrenheit");
@@ -56,8 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleButton.textContent = "Change to Fahrenheit";
         }
     });
-
-    // ... (rest of your code remains unchanged)
 
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {

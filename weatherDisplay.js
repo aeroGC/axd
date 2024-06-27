@@ -188,6 +188,7 @@ async function fetchAndDisplayHourlyTemperature(cityID) {
     }
 }
 
+let hourlyTemperatureChart;
 
 function displayHourlyTemperatureChart(hourlyData) {
     const hourlyTemperaturesCelsius = hourlyData.map(data => Math.round(data.temp - 273.15));
@@ -200,12 +201,12 @@ function displayHourlyTemperatureChart(hourlyData) {
     box1.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
+    hourlyTemperatureChart = new Chart(ctx, {  // Store the chart instance
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: '48-hour Temperature',
+                label: '24-hour Temperature',
                 data: hourlyTemperaturesCelsius,
                 fill: true,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light blue fill
