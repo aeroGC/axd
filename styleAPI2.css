@@ -80,6 +80,7 @@ button, .locationButton {
     cursor: pointer;
 }
 
+
 .suggestions li:hover {
     background-color: #f0f0f0;
 }

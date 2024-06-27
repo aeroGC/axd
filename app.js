@@ -1,11 +1,13 @@
-let isFahrenheit = false;
-
 document.addEventListener("DOMContentLoaded", function () {
+    const countryNames = getCountryNames();  // Call the function to get the country names object
+
     const cityInput = document.querySelector(".cityInput");
     const suggestionsList = document.querySelector(".suggestions");
     const locationButton = document.querySelector(".locationButton");
-    const weatherDegrees = document.querySelector(".weather_degrees"); 
-    const dailyForecasts = document.querySelectorAll(".day_temp"); 
+    const weatherDegrees = document.querySelector(".weather_degrees");
+    const dailyForecasts = document.querySelectorAll(".day_temp");
+
+    let isFahrenheit = false;  // Declare isFahrenheit globally
 
     // Convert C° to F°
     function celsiusToFahrenheit(celsius) {
@@ -47,7 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
         isFahrenheit = !isFahrenheit; // Toggle between Celsius and Fahrenheit
         updateTemperatures(); // Update displayed temperatures
         toggleButton.classList.toggle('active'); // Change visual state of the button
+        // Update button text
+        if (isFahrenheit) {
+            toggleButton.textContent = "Change to Celsius";
+        } else {
+            toggleButton.textContent = "Change to Fahrenheit";
+        }
     });
+
+    // ... (rest of your code remains unchanged)
 
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {
@@ -78,7 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch('/axd/city.list.json');
             const cities = await response.json();
-            const filteredCities = cities.filter(city => city.name.toLowerCase().includes(query.toLowerCase()));
+            const filteredCities = cities.filter(city => 
+                city.name.toLowerCase().includes(query.toLowerCase()) || 
+                (city.state && city.state.toLowerCase().includes(query.toLowerCase()))
+            );
 
             filteredCities.sort((a, b) => {
                 const nameA = a.name.toLowerCase();
@@ -95,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const uniqueCities = [];
             const cityNames = new Set();
             for (const city of filteredCities) {
-                const cityNameWithLocation = `${city.name}, ${city.state ? city.state + ', ' : ''}${city.country}`;
+                const cityNameWithLocation = `${city.name}, ${city.state ? city.state + ', ' : ''}${countryNames[city.country]}`;
                 if (!cityNames.has(cityNameWithLocation)) {
                     uniqueCities.push(city);
                     cityNames.add(cityNameWithLocation);
@@ -115,7 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         citySuggestions.forEach(suggestion => {
             const listItem = document.createElement('li');
-            listItem.textContent = `${suggestion.name}, ${suggestion.state ? suggestion.state + ', ' : ''}${suggestion.country}`;
+            const countryName = countryNames[suggestion.country] || suggestion.country;
+            listItem.textContent = `${suggestion.name}, ${suggestion.state ? suggestion.state + ', ' : ''}${countryName}`;
             listItem.addEventListener('click', () => {
                 cityInput.value = listItem.textContent;
                 suggestionsList.innerHTML = '';

@@ -1,4 +1,5 @@
 async function displayWeatherInfo(data) {
+    const countryNames = getCountryNames();  // Call the function to get the country names object
     const { name: city, id: cityID, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, coord: { lon, lat }, timezone } = data;
     const weatherCondition = weather[0].description; // Get the weather description
     const iconCode = weather[0].icon; // Get the weather condition icon
@@ -15,9 +16,9 @@ async function displayWeatherInfo(data) {
     const weatherDegrees = document.querySelector('.weather_degrees');
     const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon background element
     const weatherIcon = document.querySelector('.weather_icon'); // Get weather condition icon
-    //const weatherOverviewElement = document.querySelector('.weather_overview'); // Get weather overview element
 
-    weatherCity.innerHTML = `${city}, ${country}`;
+    const countryName = countryNames[country] || country;
+    weatherCity.innerHTML = `${city}, ${countryName}`;
 
     const celsiusTemp_max = Math.round((temp_max - 273.15).toFixed(1));
     const celsiusTemp_min = Math.round((temp_min - 273.15).toFixed(1));
@@ -27,8 +28,7 @@ async function displayWeatherInfo(data) {
     // Display temperature
     const celsiusTemp = Math.round((temp - 273.15).toFixed(1));
     weatherDegrees.innerHTML = `${celsiusTemp}°C`;
-    weatherDegrees.dataset.originalTemp = celsiusTemp; 
-
+    weatherDegrees.dataset.originalTemp = celsiusTemp;
 
     // Fetch the weather icon information
     weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`; // Using 2x size for better resolution
@@ -42,41 +42,25 @@ async function displayWeatherInfo(data) {
     const weatherConditionDetail = document.querySelector('.weather_description');
     weatherConditionDetail.innerHTML = `Weather Condition: ${weatherCondition}`;
 
-
-    //Convert from Kelvin to Celcius
+    // Convert from Kelvin to Celsius
     const feels_like_celsius = Math.round((feels_like - 273.15).toFixed(1));
     // Feels Like
     const feelsLikeDetail = document.querySelector('.feels_like_detail');
     feelsLikeDetail.innerHTML = `Feels Like: ${feels_like_celsius}°C`;
 
-    // Max/Min
-    const maxMinDetail = document.querySelector('.max_min_detail');
-    maxMinDetail.innerHTML = `Max/Min: ${celsiusTemp_max}°/${celsiusTemp_min}°`;
-
-
-
     // Box 3 Details
+
     // Humidity
     const weatherHumidity = document.querySelector(`.humidity_detail`);
     weatherHumidity.innerHTML = `Humidity: ${humidity}%`;
 
-    //Pressure
+    // Pressure
     const weatherPressure = document.querySelector(`.pressure_detail`);
     weatherPressure.innerHTML = `Pressure: ${pressure} hPa`;
 
-    //Wind
+    // Wind
     const weatherWind = document.querySelector(`.wind_detail`);
     weatherWind.innerHTML = `Wind: ${speed} m/s at ${deg}°`;
-    
-
-
-    // Fetch and display the weather overview
-    //const weatherOverviewData = await getWeatherOverview(lat, lon, apiKey);
-    //if (weatherOverviewData) {
-       // weatherOverviewElement.innerHTML = weatherOverviewData.weather_overview;
-    //} else {
-       // weatherOverviewElement.innerHTML = 'Could not fetch the weather overview.';
-    //}
 
     async function fetchAndDisplaySunMoonTimes(lat, lon, timezoneOffset) {
         const sunMoonData = await getSunMoonTimes(lat, lon);
@@ -85,12 +69,12 @@ async function displayWeatherInfo(data) {
                 // Apply the timezone offset correctly
                 return new Date((utcSeconds + timezoneOffset - 7200) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             };
-    
+
             const sunriseTime = convertToCityTime(sunMoonData.daily[0].sunrise);
             const sunsetTime = convertToCityTime(sunMoonData.daily[0].sunset);
             const moonriseTime = convertToCityTime(sunMoonData.daily[0].moonrise);
             const moonsetTime = convertToCityTime(sunMoonData.daily[0].moonset);
-    
+
             document.querySelector('.sunrise_time').innerHTML = sunriseTime;
             document.querySelector('.sunset_time').innerHTML = sunsetTime;
             document.querySelector('.moonrise_time').innerHTML = moonriseTime;
@@ -108,6 +92,7 @@ async function displayWeatherInfo(data) {
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(cityID);
 }
+
 
 
 
