@@ -7,51 +7,46 @@ document.addEventListener("DOMContentLoaded", function () {
     const weatherDegrees = document.querySelector(".weather_degrees"); 
     const dailyForecasts = document.querySelectorAll(".day_temp"); 
 
-       //convert C° to F°
-       function celsiusToFahrenheit(celsius) {
+    // Convert C° to F°
+    function celsiusToFahrenheit(celsius) {
         return (celsius * 9 / 5) + 32;
     }
 
-     // update Temperatures according to the units 
-     function updateTemperatures() {
-        //const temperatureElements = [weatherDegrees, ...dailyForecasts];
+    // Update Temperatures according to the units 
+    function updateTemperatures() {
         const temperatureElements = [document.querySelector('.weather_degrees'), ...document.querySelectorAll('.day_temp')];
 
         temperatureElements.forEach(element => {
-            const originalTemp = parseFloat(element.dataset.originalTemp); // Obtener temperatura original
-            let currentTemp = parseFloat(element.textContent); // Obtener la temperatura actual como número
-
-             // Si originalTemp no está definido, saltar al siguiente elemento
-            /*if (!originalTemp) return;
-            const [maxTempCelsius, minTempCelsius] = originalTemp.split('/').map(temp => parseFloat(temp));
-
-            if (isFahrenheit) {
-                const maxTempFahrenheit = celsiusToFahrenheit(maxTempCelsius);
-                const minTempFahrenheit = celsiusToFahrenheit(minTempCelsius);
-                element.textContent = `${maxTempFahrenheit.toFixed(1)}°/${minTempFahrenheit.toFixed(1)}°F`;
-            } else {
-                // show celcius ( original value)
-                element.textContent = `${maxTempCelsius.toFixed(1)}°/${minTempCelsius.toFixed(1)}°C`;
-                }*/
-            if (isFahrenheit) {
-                    // Convertir de Celsius a Fahrenheit
-                if (!element.dataset.originalTemp) {
-                        element.dataset.originalTemp = currentTemp; // Guardar el valor original si es la primera conversión
-                }
-                    currentTemp = celsiusToFahrenheit(originalTemp);
-                    element.textContent = `${currentTemp.toFixed(1)}°F`;
+            const originalTemp = element.dataset.originalTemp; // Get the original temperature
+            if (!originalTemp.includes('/')) {
+                // Single temperature (for the main weather visualizer)
+                let currentTemp = parseFloat(originalTemp);
+                if (isFahrenheit) {
+                    currentTemp = celsiusToFahrenheit(currentTemp);
+                    element.textContent = `${Math.round(currentTemp)}°F`;
                 } else {
-                    // Mostrar en Celsius (valor original)
-                    element.textContent = `${originalTemp.toFixed(1)}°C`;
-                    }
+                    element.textContent = `${Math.round(currentTemp)}°C`;
+                }
+            } else {
+                // Max/Min temperatures (for the weekly forecast)
+                let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
+                if (isFahrenheit) {
+                    maxTemp = celsiusToFahrenheit(maxTemp);
+                    minTemp = celsiusToFahrenheit(minTemp);
+                    element.textContent = `${Math.round(maxTemp)}°F/${Math.round(minTemp)}°F`;
+                } else {
+                    element.textContent = `${Math.round(maxTemp)}°C/${Math.round(minTemp)}°C`;
+                }
+            }
         });
-    }   
-    // Evento click para el botón de cambio entre Celsius y Fahrenheit
+    }
+
+    // Event click for the toggle button between Celsius and Fahrenheit
     const toggleButton = document.getElementById("toggleFahrenheit");
     toggleButton.addEventListener('click', function () {
-        isFahrenheit = !isFahrenheit; // Alternar entre Celsius y Fahrenheit
-        updateTemperatures(); // Actualizar las temperaturas mostradas
-        toggleButton.classList.toggle('active'); // Cambiar el estado visual del botón
+        isFahrenheit = !isFahrenheit; // Toggle between Celsius and Fahrenheit
+        updateTemperatures(); // Update displayed temperatures
+        toggleButton.classList.toggle('active'); // Change visual state of the button
     });
 
     async function getWeatherForCurrentLocation() {
@@ -62,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
                     displayWeatherInfo(weatherData);
 
-                    const city = weatherData.name; // Extract city name
-                    const dailyForecast = await getDailyForecast(city);
+                    const cityID = weatherData.id; // Extract city ID
+                    const dailyForecast = await getDailyForecastByCityID(cityID);
                     if (dailyForecast) {
                         displayDailyForecast(dailyForecast);
                     } else {
@@ -100,9 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const uniqueCities = [];
             const cityNames = new Set();
             for (const city of filteredCities) {
-                if (!cityNames.has(city.name)) {
+                const cityNameWithLocation = `${city.name}, ${city.state ? city.state + ', ' : ''}${city.country}`;
+                if (!cityNames.has(cityNameWithLocation)) {
                     uniqueCities.push(city);
-                    cityNames.add(city.name);
+                    cityNames.add(cityNameWithLocation);
                 }
             }
 
@@ -135,10 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const weatherData = await getWeatherDataByCityID(cityID);
             displayWeatherInfo(weatherData);
-            
-            // Fetch and display the 5-day forecast
-            const city = weatherData.name;
-            const dailyForecast = await getDailyForecast(city);
+
+            // Fetch and display the 5-day forecast using city ID
+            const dailyForecast = await getDailyForecastByCityID(cityID);
             if (dailyForecast) {
                 displayDailyForecast(dailyForecast);
             } else {
@@ -168,8 +163,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     locationButton.addEventListener('click', function () {
-        cityInput.value=``;
-        suggestionsList.innerHTML = ``;
+        cityInput.value = '';
+        suggestionsList.innerHTML = '';
         getWeatherForCurrentLocation();
     });
 

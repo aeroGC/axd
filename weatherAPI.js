@@ -40,8 +40,8 @@ async function getWeatherDataByCityID(cityID) {
     //}
 //}
 
-async function getDailyForecast(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+async function getDailyForecastByCityID(cityID) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&units=metric&appid=${apiKey}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -53,6 +53,7 @@ async function getDailyForecast(city) {
         return null;
     }
 }
+
 
 
 

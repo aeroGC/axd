@@ -112,16 +112,15 @@ async function displayWeatherInfo(data) {
 
 
 function displayDailyForecast(forecastData) {
-    const weeklyForecast = document.querySelectorAll('.day_forecast'); // Get all existing day_forecast divs
+    const weeklyForecast = document.querySelectorAll('.day_forecast'); 
     if (weeklyForecast.length !== 5) {
         console.error("There should be exactly 5 '.day_forecast' elements in the HTML.");
         return;
     }
     const now = new Date();
-    now.setHours(0, 0, 0, 0); // Set to start of today
-    const nextDayTimestamp = now.getTime() + 86400000; // Get timestamp for the start of tomorrow
+    now.setHours(0, 0, 0, 0);
+    const nextDayTimestamp = now.getTime() + 86400000;
     
-    // Group forecast data by day
     const daysData = {};
     forecastData.list.forEach(entry => {
         const entryDate = new Date(entry.dt * 1000);
@@ -135,14 +134,14 @@ function displayDailyForecast(forecastData) {
                 daysData[entryDay] = {
                     dayNumber: entryDayNumber,
                     temps: [],
-                    icon: iconCode, // Add icon code
-                    condition: weatherCondition // Add weather condition
+                    icon: iconCode,
+                    condition: weatherCondition
                 };
             }
             daysData[entryDay].temps.push(entry.main.temp);
         }
     });
-    // Create an array of 5 days from now
+
     const forecastDays = [];
     for (let i = 1; i <= 5; i++) {
         const date = new Date(now.getTime() + i * 86400000);
@@ -153,42 +152,39 @@ function displayDailyForecast(forecastData) {
                 day: dayName,
                 dayNumber: dayNumber,
                 temps: daysData[dayName].temps,
-                icon: daysData[dayName].icon, // Include icon
-                condition: daysData[dayName].condition // Include weather condition
+                icon: daysData[dayName].icon,
+                condition: daysData[dayName].condition
             });
         } else {
-            // Handle the case where forecast data might not be available for some days
             forecastDays.push({
                 day: dayName,
                 dayNumber: dayNumber,
                 temps: [],
-                icon: null, // No icon available
-                condition: '' // No condition available
+                icon: null,
+                condition: ''
             });
         }
     }
+
     forecastDays.forEach((dayData, index) => {
         const temps = dayData.temps;
-        const maxTemp = temps.length > 0 ? Math.round(Math.max(...temps)) : 'N/A'; // Convert max temp to Celsius and round
-        const minTemp = temps.length > 0 ? Math.round(Math.min(...temps)) : 'N/A'; // Convert min temp to Celsius and round
-        // Update the existing divs with new data
+        const maxTemp = temps.length > 0 ? Math.round(Math.max(...temps)) : 'N/A';
+        const minTemp = temps.length > 0 ? Math.round(Math.min(...temps)) : 'N/A';
         const dayForecast = weeklyForecast[index];
         dayForecast.querySelector('.day_name').textContent = dayData.day;
         dayForecast.querySelector('.day_date').textContent = dayData.dayNumber;
         dayForecast.querySelector('.day_temp').textContent = `${maxTemp}°/${minTemp}°`;
+        dayForecast.querySelector('.day_temp').dataset.originalTemp = `${maxTemp}°/${minTemp}°`;
 
-        dayForecast.querySelector('.day_temp').dataset.originalTemp = `${maxTemp}°/${minTemp}°`; // Guardar la temperatura original
-
-        
-        // Set the weather condition icon
         const dayIcon = dayForecast.querySelector('.day_icon');
         if (dayData.icon) {
-            dayIcon.src = getWeatherConditionIcon(dayData.icon); // Use custom weather icons
+            dayIcon.src = getWeatherConditionIcon(dayData.icon);
         } else {
-            dayIcon.src = ''; // Clear icon if not available
+            dayIcon.src = '';
         }
     });
 }
+
 
 
 
