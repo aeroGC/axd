@@ -24,22 +24,6 @@ async function getWeatherDataByCityID(cityID) {
 }
 
 
-
-// Get weather Overview
-//async function getWeatherOverview(lat, lon) {
-    //const apiUrl = `https://api.openweathermap.org/data/3.0/onecall/overview?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-    //try {
-        //const response = await fetch(apiUrl);
-        //if (!response.ok) {
-            //throw new Error("Unable to fetch weather overview.");
-        //}
-        //return await response.json();
-    //} catch (error) {
-        //console.error("Error fetching weather overview:", error);
-        //return null;
-    //}
-//}
-
 async function getDailyForecastByCityID(cityID) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&units=metric&appid=${apiKey}`;
     try {
@@ -53,9 +37,6 @@ async function getDailyForecastByCityID(cityID) {
         return null;
     }
 }
-
-
-
 
 async function fetchHourlyTemperatureDataByCityID(cityID) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&appid=${apiKey}`;
@@ -85,6 +66,32 @@ async function getSunMoonTimes(lat, lon) {
         return await response.json();
     } catch (error) {
         console.error("Error fetching sun and moon times:", error);
+        return null;
+    }
+}
+
+async function getAirPollutionData(lat, lon) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+        throw new Error("Could not fetch air pollution data");
+    }
+
+    return await response.json();
+}
+
+async function getWeatherOverview(lat, lon) {
+    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall/overview?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&units=metric&appid=${apiKey}`;
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error("Unable to fetch weather overview.");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching weather overview:", error);
         return null;
     }
 }

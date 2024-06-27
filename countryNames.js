@@ -162,7 +162,7 @@ function getCountryNames() {
         "OM": "Oman",
         "PK": "Pakistan",
         "PW": "Palau",
-        "PS": "Palestine, State of",
+        "PS": "Palestine",
         "PA": "Panama",
         "PG": "Papua New Guinea",
         "PY": "Paraguay",

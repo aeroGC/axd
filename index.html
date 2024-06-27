@@ -155,14 +155,23 @@
                 <p class="wind_detail">Wind</p>
             </div>
             <div>
-                <p class="wind_detail"></p>
+                <img src="/axd/logos_icons/air_quality.svg" alt="wind" width="20px" height="20px">
+                <p class="air_detail">Air Pollution</p>
             </div>
             <div>
-                <p class="wind_detail"></p>
+                <button id="summaryButton">Weather Overview</button>
             </div>
         </div>
     </div>
 </main>
+
+<!-- Modal structure -->
+<div id="summaryModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="weather_summary"></p>
+    </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     

@@ -87,10 +87,58 @@ async function displayWeatherInfo(data) {
         }
     }
 
+    try {
+        const airPollutionData = await getAirPollutionData(lat, lon);
+        const airQualityIndex = airPollutionData.list[0].main.aqi;
+        const airQualityDetail = document.querySelector(`.air_detail`);
+        airQualityDetail.innerHTML = `Air Quality Index: ${airQualityIndex}`;
+    } catch (error) {
+        console.error("Error fetching air pollution data:", error);
+    }
+
     await fetchAndDisplaySunMoonTimes(lat, lon, timezone);
 
     // Display hourly temperature chart
     fetchAndDisplayHourlyTemperature(cityID);
+
+    // Handle summary button click
+    const summaryButton = document.getElementById('summaryButton');
+    const modal = document.getElementById('summaryModal');
+    const closeBtn = document.querySelector('.close');
+    const weatherSummary = document.querySelector('.weather_summary');
+
+    summaryButton.onclick = async function() {
+    
+        // Show the modal immediately with a loading message
+        weatherSummary.innerHTML = "Loading weather overview...";
+        weatherSummary.classList.add('loading'); // Add loading class
+        modal.style.display = "block";
+    
+        try {
+            const weatherOverview = await getWeatherOverview(lat, lon);
+    
+            if (weatherOverview) {
+                weatherSummary.innerHTML = weatherOverview.weather_overview || "No weather overview available.";
+            } else {
+                weatherSummary.innerHTML = "No weather overview available.";
+            }
+        } catch (error) {
+            weatherSummary.innerHTML = "Error fetching weather overview.";
+        }
+    
+        weatherSummary.classList.remove('loading'); // Remove loading class
+    };
+    
+
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
 }
 
 
