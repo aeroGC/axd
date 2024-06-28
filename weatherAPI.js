@@ -38,6 +38,20 @@ async function getDailyForecastByCityID(cityID) {
     }
 }
 
+async function fetchAndDisplayHourlyTemperature(cityID) {
+    try {
+        const hourlyData = await fetchHourlyTemperatureDataByCityID(cityID);
+        if (hourlyData) {
+            displayHourlyTemperatureChart(hourlyData);
+        } else {
+            console.error("Failed to fetch the correct amount of hourly temperature data.");
+        }
+    } catch (error) {
+        console.error("Error fetching hourly temperature data:", error);
+    }
+}
+
+
 async function fetchHourlyTemperatureDataByCityID(cityID) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&appid=${apiKey}`;
     const response = await fetch(apiUrl);
@@ -49,12 +63,14 @@ async function fetchHourlyTemperatureDataByCityID(cityID) {
     const data = await response.json();
     const timezoneOffset = data.city.timezone;
 
-    // Extract the next 48 hours of data and adjust the time for the city's timezone
+    // Extract the next 24 hours of data and adjust the time for the city's timezone
     return data.list.slice(0, 9).map(current => ({
         temp: current.main.temp,
-        time: current.dt + timezoneOffset
+        time: current.dt + timezoneOffset,
+        icon: current.weather[0].icon
     }));
 }
+
 
 async function getSunMoonTimes(lat, lon) {
     const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;

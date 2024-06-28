@@ -141,9 +141,6 @@ async function displayWeatherInfo(data) {
     };
 }
 
-
-
-
 function displayDailyForecast(forecastData) {
     const weeklyForecast = document.querySelectorAll('.day_forecast'); 
     if (weeklyForecast.length !== 5) {
@@ -218,29 +215,10 @@ function displayDailyForecast(forecastData) {
     });
 }
 
-
-
-
-
-
-async function fetchAndDisplayHourlyTemperature(cityID) {
-    try {
-        const hourlyData = await fetchHourlyTemperatureDataByCityID(cityID);
-        if (hourlyData) {
-            displayHourlyTemperatureChart(hourlyData);
-        } else {
-            console.error("Failed to fetch the correct amount of hourly temperature data.");
-        }
-    } catch (error) {
-        console.error("Error fetching hourly temperature data:", error);
-    }
-}
-
-let hourlyTemperatureChart;
-
 function displayHourlyTemperatureChart(hourlyData) {
-    const hourlyTemperaturesCelsius = hourlyData.map(data => Math.round(data.temp - 273.15));
+    hourlyTemperaturesCelsius = hourlyData.map(data => Math.round(data.temp - 273.15));  // Store original temperatures in Celsius
     const labels = getCurrentHourLabels(hourlyData);
+    const icons = hourlyData.map(data => data.icon);
 
     const box1 = document.getElementById('box1');
     const canvas = document.createElement('canvas');
@@ -249,77 +227,51 @@ function displayHourlyTemperatureChart(hourlyData) {
     box1.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    hourlyTemperatureChart = new Chart(ctx, {  // Store the chart instance
+
+    hourlyTemperatureChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [{
-                label: '24-hour Temperature',
-                data: hourlyTemperaturesCelsius,
-                fill: true,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light blue fill
-                borderColor: 'rgba(75, 192, 192, 1)', // Blue border
-                borderWidth: 2, // Width of the line
-                tension: 0.4, // Smoothing of the line
-                pointBackgroundColor: 'rgba(75, 192, 192, 1)', // Color of the points
-                pointBorderColor: '#fff', // Border color of the points
-                pointHoverBackgroundColor: '#fff', // Color of the points when hovered
-                pointHoverBorderColor: 'rgba(75, 192, 192, 1)' // Border color of the points when hovered
-            }]
+            datasets: [
+                {
+                    label: 'Temperature (°C)',
+                    data: hourlyTemperaturesCelsius,
+                    fill: true,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
+                    pointStyle: icons.map(icon => {
+                        const img = new Image(40, 40);
+                        img.src = getWeatherConditionIcon(icon);
+                        return img;
+                    })
+                }
+            ]
         },
         options: {
-            responsive: true, // Make the chart responsive
-            maintainAspectRatio: false, // Do not maintain aspect ratio
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
-                    beginAtZero: false, // Adjust as needed
+                    beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Temperature (°C)', // Y-axis label
-                        font: {
-                            size: 14
-                        }
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Hour of the Day', // X-axis label
-                        font: {
-                            size: 14
-                        }
-                    },
-                    ticks: {
-                        autoSkip: false, // Ensure that all labels are displayed
-                        maxRotation: 0, // No rotation for labels
-                        minRotation: 0 // No rotation for labels
+                        text: 'Temperature (°C)'
                     }
                 }
             },
             plugins: {
                 legend: {
-                    display: true,
-                    labels: {
-                        font: {
-                            size: 12,
-                            family: 'Arial, sans-serif'
-                        },
-                        color: '#333' // Legend text color
-                    }
+                    display: true
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Tooltip background color
-                    titleFont: {
-                        size: 14,
-                        family: 'Arial, sans-serif'
-                    },
-                    bodyFont: {
-                        size: 12,
-                        family: 'Arial, sans-serif'
-                    },
-                    bodySpacing: 4,
-                    padding: 10,
-                    cornerRadius: 4
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return `Temperature: ${tooltipItem.raw}°C`;
+                        }
+                    }
                 }
             }
         }
