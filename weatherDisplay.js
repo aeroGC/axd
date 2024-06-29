@@ -47,6 +47,7 @@ async function displayWeatherInfo(data) {
     // Feels Like
     const feelsLikeDetail = document.querySelector('.feels_like_detail');
     feelsLikeDetail.innerHTML = `Feels Like: ${feels_like_celsius}°C`;
+    feelsLikeDetail.dataset.originalTemp = feels_like_celsius;
 
     // Box 3 Details
 
@@ -234,7 +235,7 @@ function displayHourlyTemperatureChart(hourlyData) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Temperature (°C)',
+                    label: ' 24-hour Temperature',
                     data: hourlyTemperaturesCelsius,
                     fill: true,
                     borderColor: 'rgba(75, 192, 192, 1)',

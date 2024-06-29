@@ -14,43 +14,51 @@ document.addEventListener("DOMContentLoaded", function () {
         return (celsius * 9 / 5) + 32;
     }
 
-// Update Temperatures according to the units 
-function updateTemperatures() {
-    const temperatureElements = [document.querySelector('.weather_degrees'), ...document.querySelectorAll('.day_temp')];
+    // Update Temperatures according to the units
+    function updateTemperatures() {
+        const temperatureElements = [
+            document.querySelector('.weather_degrees'), 
+            ...document.querySelectorAll('.day_temp'),
+            document.querySelector('.feels_like_detail')
+        ];
 
-    temperatureElements.forEach(element => {
-        const originalTemp = element.dataset.originalTemp; // Get the original temperature
-        if (!originalTemp.includes('/')) {
-            // Single temperature (for the main weather visualizer)
-            let currentTemp = parseFloat(originalTemp);
-            if (isFahrenheit) {
-                currentTemp = celsiusToFahrenheit(currentTemp);
-                element.textContent = `${Math.round(currentTemp)}°F`;
+        temperatureElements.forEach(element => {
+            const originalTemp = element.dataset.originalTemp; // Get the original temperature
+            if (!originalTemp.includes('/')) {
+                // Single temperature (for the main weather visualizer and feels like)
+                let currentTemp = parseFloat(originalTemp);
+                if (isFahrenheit) {
+                    currentTemp = celsiusToFahrenheit(currentTemp);
+                    element.textContent = element.classList.contains('feels_like_detail') 
+                        ? `Feels Like: ${Math.round(currentTemp)}°F` 
+                        : `${Math.round(currentTemp)}°F`;
+                } else {
+                    element.textContent = element.classList.contains('feels_like_detail') 
+                        ? `Feels Like: ${Math.round(currentTemp)}°C` 
+                        : `${Math.round(currentTemp)}°C`;
+                }
             } else {
-                element.textContent = `${Math.round(currentTemp)}°C`;
+                // Max/Min temperatures (for the weekly forecast)
+                let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
+                if (isFahrenheit) {
+                    maxTemp = celsiusToFahrenheit(maxTemp);
+                    minTemp = celsiusToFahrenheit(minTemp);
+                    element.textContent = `${Math.round(maxTemp)}°F/${Math.round(minTemp)}°F`;
+                } else {
+                    element.textContent = `${Math.round(maxTemp)}°C/${Math.round(minTemp)}°C`;
+                }
             }
-        } else {
-            // Max/Min temperatures (for the weekly forecast)
-            let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
-            if (isFahrenheit) {
-                maxTemp = celsiusToFahrenheit(maxTemp);
-                minTemp = celsiusToFahrenheit(minTemp);
-                element.textContent = `${Math.round(maxTemp)}°F/${Math.round(minTemp)}°F`;
-            } else {
-                element.textContent = `${Math.round(maxTemp)}°C/${Math.round(minTemp)}°C`;
-            }
-        }
-    });
-
-    // Update hourly chart temperatures
-    if (hourlyTemperatureChart) {
-        hourlyTemperatureChart.data.datasets[0].data = hourlyTemperatureChart.data.datasets[0].data.map(temp => {
-            return isFahrenheit ? celsiusToFahrenheit(temp) : (temp - 32) * 5 / 9;
         });
-        hourlyTemperatureChart.options.scales.y.title.text = `Temperature (${isFahrenheit ? '°F' : '°C'})`;
-        hourlyTemperatureChart.update();
+
+        // Update hourly chart temperatures
+        if (hourlyTemperatureChart) {
+            hourlyTemperatureChart.data.datasets[0].data = hourlyTemperatureChart.data.datasets[0].data.map(temp => {
+                return isFahrenheit ? celsiusToFahrenheit(temp) : (temp - 32) * 5 / 9;
+            });
+            hourlyTemperatureChart.options.scales.y.title.text = `Temperature (${isFahrenheit ? '°F' : '°C'})`;
+            hourlyTemperatureChart.update();
+        }
     }
-}
 
     // Event click for the toggle button between Celsius and Fahrenheit
     const toggleButton = document.getElementById("toggleFahrenheit");
@@ -66,30 +74,61 @@ function updateTemperatures() {
         }
     });
 
+
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async function (position) {
-                const { latitude, longitude } = position.coords;
-                try {
-                    const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
-                    displayWeatherInfo(weatherData);
-
-                    const cityID = weatherData.id; // Extract city ID
-                    const dailyForecast = await getDailyForecastByCityID(cityID);
-                    if (dailyForecast) {
-                        displayDailyForecast(dailyForecast);
-                    } else {
-                        displayError("Could not fetch daily forecast. Please try again later.");
+            const options = {
+                enableHighAccuracy: true, // Request high accuracy
+                timeout: 10000, // Set timeout to 10 seconds
+                maximumAge: 0 // Ensure no cached location is used
+            };
+    
+            navigator.geolocation.getCurrentPosition(
+                async function (position) {
+                    const { latitude, longitude } = position.coords;
+                    try {
+                        const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
+                        displayWeatherInfo(weatherData);
+    
+                        const cityID = weatherData.id; // Extract city ID
+                        const dailyForecast = await getDailyForecastByCityID(cityID);
+                        if (dailyForecast) {
+                            displayDailyForecast(dailyForecast);
+                        } else {
+                            displayError("Could not fetch daily forecast. Please try again later.");
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        displayError("Could not fetch weather data. Please try again later.");
                     }
-                } catch (error) {
+                },
+                function (error) {
+                    let errorMessage;
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = "Permission denied. Please allow access to your location.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = "Position unavailable. Please check your location settings.";
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = "Request timed out. Please try again.";
+                            break;
+                        default:
+                            errorMessage = "An unknown error occurred.";
+                            break;
+                    }
                     console.error(error);
-                    displayError("Could not fetch weather data. Please try again later.");
-                }
-            });
+                    displayError(errorMessage);
+                },
+                options // Pass options object
+            );
         } else {
             displayError("Geolocation is not supported by this browser.");
         }
     }
+    
+    
 
     async function fetchCities(query) {
         try {

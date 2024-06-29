@@ -8,12 +8,12 @@ function getWeatherIcon(condition) {
         "broken clouds": "/axd/logos_icons/weather_condition/brokenClouds.jpeg",
         "light intensity drizzle|drizzle|heavy intensity drizzle|light intensity drizzle rain|drizzle rain|heavy intensity drizzle rain|shower rain and drizzle|heavy shower rain and drizzle|shower drizzle": "/axd/logos_icons/weather_condition/rain.jpeg",
         "light rain|moderate rain|heavy intensity rain|very heavy rain|extreme rain|freezing rain|light intensity shower rain|shower rain|heavy intensity shower rain|ragged shower rain": "/axd/logos_icons/weather_condition/rain.jpeg",
-        "thunderstorm with light rain|thunderstorm with rain|thunderstorm with heavy rain|light thunderstorm|thunderstorm|heavy thunderstorm|ragged thunderstorm|thunderstorm with light drizzle|thunderstorm with drizzle|thunderstorm with heavy drizzle": "/axd/logos_icons/weather_condition/thunderstorm.jpeg",
+        "thunderstorm with light rain|thunderstorm with rain|thunderstorm with heavy rain|light thunderstorm|thunderstorm|heavy thunderstorm|ragged thunderstorm|thunderstorm with light drizzle|thunderstorm with drizzle|thunderstorm with heavy drizzle": "/axd/logos_icons/weather_condition/tunderstorm.jpeg",
         "light snow|snow|heavy snow|sleet|light shower sleet|shower sleet|light rain and snow|rain and snow|light shower snow|shower snow|heavy shower snow": "/axd/logos_icons/weather_condition/snow.jpeg",
         "mist|smoke|haze|fog": "/axd/logos_icons/weather_condition/mist.jpg",
-        "sand/dust whirls|sand|dust": "/axd/logos_icons/weather_condition/sand.jpeg",
-        "volcanic ash": "/axd/logos_icons/weather_condition/volcanicAsh.jpeg",
-        "squalls|tornado": "/axd/logos_icons/weather_condition/tornado.jpeg"
+        "sand/dust whirls|sand|dust": "/axd/logos_icons/weather_condition/mist.jpg",
+        "volcanic ash": "/axd/logos_icons/weather_condition/volcanicAsh.jpg",
+        "squalls|tornado": "/axd/logos_icons/weather_condition/tornado.jpg"
     };
     const conditionKey = condition.toLowerCase();
     for (const key in conditionIcons) {
