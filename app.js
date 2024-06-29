@@ -77,56 +77,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function getWeatherForCurrentLocation() {
         if (navigator.geolocation) {
-            const options = {
-                enableHighAccuracy: true, // Request high accuracy
-                timeout: 10000, // Set timeout to 10 seconds
-                maximumAge: 0 // Ensure no cached location is used
-            };
+            navigator.geolocation.getCurrentPosition(async function (position) {
+                const { latitude, longitude } = position.coords;
+                try {
+                    const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
+                    displayWeatherInfo(weatherData);
     
-            navigator.geolocation.getCurrentPosition(
-                async function (position) {
-                    const { latitude, longitude } = position.coords;
-                    try {
-                        const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
-                        displayWeatherInfo(weatherData);
-    
-                        const cityID = weatherData.id; // Extract city ID
-                        const dailyForecast = await getDailyForecastByCityID(cityID);
-                        if (dailyForecast) {
-                            displayDailyForecast(dailyForecast);
-                        } else {
-                            displayError("Could not fetch daily forecast. Please try again later.");
-                        }
-                    } catch (error) {
-                        console.error(error);
-                        displayError("Could not fetch weather data. Please try again later.");
+                    const cityID = weatherData.id; // Extract city ID
+                    const dailyForecast = await getDailyForecastByCityID(cityID);
+                    if (dailyForecast) {
+                        displayDailyForecast(dailyForecast);
+                    } else {
+                        displayError("Could not fetch daily forecast. Please try again later.");
                     }
-                },
-                function (error) {
-                    let errorMessage;
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = "Permission denied. Please allow access to your location.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Position unavailable. Please check your location settings.";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "Request timed out. Please try again.";
-                            break;
-                        default:
-                            errorMessage = "An unknown error occurred.";
-                            break;
-                    }
+                } catch (error) {
                     console.error(error);
-                    displayError(errorMessage);
-                },
-                options // Pass options object
-            );
+                    displayError("Could not fetch weather data. Please try again later.");
+                }
+            }, function (error) {
+                console.error(error);
+                displayError("Unable to retrieve your location. Please check your location settings and try again.");
+            });
         } else {
             displayError("Geolocation is not supported by this browser.");
         }
     }
+    
     
     
 
