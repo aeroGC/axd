@@ -72,19 +72,32 @@ async function fetchHourlyTemperatureDataByCityID(cityID) {
 }
 
 
-async function getSunMoonTimes(lat, lon) {
+async function getSunMoonTimes(lat, lon, timezoneOffset) {
     const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error("Unable to fetch sun and moon times.");
         }
-        return await response.json();
+        const data = await response.json();
+        // Adjust times to the city's local timezone
+        const convertToCityTime = (utcSeconds) => {
+            const adjustedSeconds = utcSeconds - 7200; 
+            return new Date((adjustedSeconds + timezoneOffset) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        };
+
+        return {
+            sunrise: convertToCityTime(data.daily[0].sunrise),
+            sunset: convertToCityTime(data.daily[0].sunset),
+            moonrise: convertToCityTime(data.daily[0].moonrise),
+            moonset: convertToCityTime(data.daily[0].moonset)
+        };
     } catch (error) {
         console.error("Error fetching sun and moon times:", error);
         return null;
     }
 }
+
 
 async function getAirPollutionData(lat, lon) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;

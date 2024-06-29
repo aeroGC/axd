@@ -64,22 +64,12 @@ async function displayWeatherInfo(data) {
     weatherWind.innerHTML = `Wind: ${speed} m/s at ${deg}°`;
 
     async function fetchAndDisplaySunMoonTimes(lat, lon, timezoneOffset) {
-        const sunMoonData = await getSunMoonTimes(lat, lon);
+        const sunMoonData = await getSunMoonTimes(lat, lon, timezoneOffset);
         if (sunMoonData) {
-            const convertToCityTime = (utcSeconds) => {
-                // Apply the timezone offset correctly
-                return new Date((utcSeconds + timezoneOffset - 7200) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            };
-
-            const sunriseTime = convertToCityTime(sunMoonData.daily[0].sunrise);
-            const sunsetTime = convertToCityTime(sunMoonData.daily[0].sunset);
-            const moonriseTime = convertToCityTime(sunMoonData.daily[0].moonrise);
-            const moonsetTime = convertToCityTime(sunMoonData.daily[0].moonset);
-
-            document.querySelector('.sunrise_time').innerHTML = sunriseTime;
-            document.querySelector('.sunset_time').innerHTML = sunsetTime;
-            document.querySelector('.moonrise_time').innerHTML = moonriseTime;
-            document.querySelector('.moonset_time').innerHTML = moonsetTime;
+            document.querySelector('.sunrise_time').innerHTML = sunMoonData.sunrise;
+            document.querySelector('.sunset_time').innerHTML = sunMoonData.sunset;
+            document.querySelector('.moonrise_time').innerHTML = sunMoonData.moonrise;
+            document.querySelector('.moonset_time').innerHTML = sunMoonData.moonset;
         } else {
             document.querySelector('.sunrise_time').innerHTML = '--:--';
             document.querySelector('.sunset_time').innerHTML = '--:--';
