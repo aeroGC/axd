@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const countryNames = getCountryNames();  // Call the function to get the country names object
+    const countryNames = getCountryNames();
 
     const cityInput = document.querySelector(".cityInput");
     const suggestionsList = document.querySelector(".suggestions");
@@ -7,14 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const weatherDegrees = document.querySelector(".weather_degrees");
     const dailyForecasts = document.querySelectorAll(".day_temp");
 
-    let isFahrenheit = false;  // Declare isFahrenheit globally
+    let isFahrenheit = false;
 
-    // Convert C° to F°
+    
     function celsiusToFahrenheit(celsius) {
         return (celsius * 9 / 5) + 32;
     }
 
-    // Update Temperatures according to the units
+    
     function updateTemperatures() {
         const temperatureElements = [
             document.querySelector('.weather_degrees'), 
@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         temperatureElements.forEach(element => {
-            const originalTemp = element.dataset.originalTemp; // Get the original temperature
+            const originalTemp = element.dataset.originalTemp; 
             if (!originalTemp.includes('/')) {
-                // Single temperature (for the main weather visualizer and feels like)
+                
                 let currentTemp = parseFloat(originalTemp);
                 if (isFahrenheit) {
                     currentTemp = celsiusToFahrenheit(currentTemp);
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         : `${Math.round(currentTemp)}°C`;
                 }
             } else {
-                // Max/Min temperatures (for the weekly forecast)
+                
                 let [maxTemp, minTemp] = originalTemp.split('/').map(temp => parseFloat(temp));
                 if (isFahrenheit) {
                     maxTemp = celsiusToFahrenheit(maxTemp);
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Update hourly chart temperatures
+        
         if (hourlyTemperatureChart) {
             hourlyTemperatureChart.data.datasets[0].data = hourlyTemperatureChart.data.datasets[0].data.map(temp => {
                 return isFahrenheit ? celsiusToFahrenheit(temp) : (temp - 32) * 5 / 9;
@@ -60,13 +60,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Event click for the toggle button between Celsius and Fahrenheit
+    
     const toggleButton = document.getElementById("toggleFahrenheit");
     toggleButton.addEventListener('click', function () {
-        isFahrenheit = !isFahrenheit; // Toggle between Celsius and Fahrenheit
-        updateTemperatures(); // Update displayed temperatures
-        toggleButton.classList.toggle('active'); // Change visual state of the button
-        // Update button text
+        isFahrenheit = !isFahrenheit; 
+        updateTemperatures(); 
+        toggleButton.classList.toggle('active'); 
+        
         if (isFahrenheit) {
             toggleButton.textContent = "Change to Celsius";
         } else {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const weatherData = await getWeatherDataByCoordinates(latitude, longitude);
                     displayWeatherInfo(weatherData);
     
-                    const cityID = weatherData.id; // Extract city ID
+                    const cityID = weatherData.id; 
                     const dailyForecast = await getDailyForecastByCityID(cityID);
                     if (dailyForecast) {
                         displayDailyForecast(dailyForecast);
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const weatherData = await getWeatherDataByCityID(cityID);
             displayWeatherInfo(weatherData);
 
-            // Fetch and display the 5-day forecast using city ID
+            
             const dailyForecast = await getDailyForecastByCityID(cityID);
             if (dailyForecast) {
                 displayDailyForecast(dailyForecast);
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }, 300));
 
-        // Select all text on focus
+        
         cityInput.addEventListener('focus', function () {
             cityInput.select();
         });

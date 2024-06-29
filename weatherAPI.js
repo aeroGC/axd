@@ -1,6 +1,6 @@
 const apiKey = "b9faee0bd1e04c259117cb25d4ac3356";
 
-// Function to fetch weather data for given coordinates
+
 async function getWeatherDataByCoordinates(lat, lon) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const response = await fetch(apiUrl);
@@ -63,7 +63,6 @@ async function fetchHourlyTemperatureDataByCityID(cityID) {
     const data = await response.json();
     const timezoneOffset = data.city.timezone;
 
-    // Extract the next 24 hours of data and adjust the time for the city's timezone
     return data.list.slice(0, 9).map(current => ({
         temp: current.main.temp,
         time: current.dt + timezoneOffset,
@@ -80,7 +79,7 @@ async function getSunMoonTimes(lat, lon, timezoneOffset) {
             throw new Error("Unable to fetch sun and moon times.");
         }
         const data = await response.json();
-        // Adjust times to the city's local timezone
+        
         const convertToCityTime = (utcSeconds) => {
             const adjustedSeconds = utcSeconds - 7200; 
             return new Date((adjustedSeconds + timezoneOffset) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

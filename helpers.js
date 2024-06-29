@@ -1,4 +1,4 @@
-// Function to map weather conditions to icons
+
 function getWeatherIcon(condition) {
     const conditionIcons = {
         "clear sky": "/axd/logos_icons/weather_condition/clearSky.jpeg",
@@ -23,7 +23,7 @@ function getWeatherIcon(condition) {
     }
 }
 
-// Function to map weather conditions to icons
+
 function getWeatherConditionIcon(iconCode) {
     const Icons = {
         "01d": "/axd/logos_icons/weather_condition_icons/clear_sky.svg",
@@ -49,16 +49,16 @@ function getWeatherConditionIcon(iconCode) {
 }
 
 
-// Function to get the time of the city and display it on the chart.
+
 function getCurrentHourLabels(hourlyData) {
     return hourlyData.map(data => {
-        const date = new Date(data.time * 1000); // Convert to milliseconds
-        const hours = date.getUTCHours(); // Get the hour in 24-hour format (UTC)
+        const date = new Date(data.time * 1000);
+        const hours = date.getUTCHours();
         return `${hours}h`;
     });
 }
 
-// Debounce function to limit the rate at which a function can fire.
+
 function debounce(func, wait) {
     let timeout;
     return function(...args) {

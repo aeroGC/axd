@@ -1,21 +1,21 @@
 async function displayWeatherInfo(data) {
-    const countryNames = getCountryNames();  // Call the function to get the country names object
+    const countryNames = getCountryNames();  
     const { name: city, id: cityID, sys: { country }, main: { temp, temp_min, temp_max, humidity, feels_like, pressure }, wind: { speed, deg }, weather, coord: { lon, lat }, timezone } = data;
-    const weatherCondition = weather[0].description; // Get the weather description
-    const iconCode = weather[0].icon; // Get the weather condition icon
+    const weatherCondition = weather[0].description; 
+    const iconCode = weather[0].icon; 
 
-    // Get local date and time of the city
-    const now = new Date(Date.now() + (timezone * 1000)); // Convert to milliseconds
+    
+    const now = new Date(Date.now() + (timezone * 1000));
     const formattedDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-    const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }); // Adjust for timezone
+    const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
 
     // Display city, country, date, and time
     const weatherCity = document.querySelector('.weather_city');
     const weatherDate = document.querySelector('.weather_date');
     const weatherTime = document.querySelector('.weather_time');
     const weatherDegrees = document.querySelector('.weather_degrees');
-    const weatherVisualizer = document.querySelector('.weather_visualizer'); // Get weather icon background element
-    const weatherIcon = document.querySelector('.weather_icon'); // Get weather condition icon
+    const weatherVisualizer = document.querySelector('.weather_visualizer');
+    const weatherIcon = document.querySelector('.weather_icon');
 
     const countryName = countryNames[country] || country;
     weatherCity.innerHTML = `${city}, ${countryName}`;
@@ -31,10 +31,11 @@ async function displayWeatherInfo(data) {
     weatherDegrees.dataset.originalTemp = celsiusTemp;
 
     // Fetch the weather icon information
-    weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`; // Using 2x size for better resolution
+    weatherIcon.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
     // Set weather icon dynamically
     weatherVisualizer.src = getWeatherIcon(weatherCondition);
+
 
     // Display weather details
 
@@ -48,6 +49,7 @@ async function displayWeatherInfo(data) {
     const feelsLikeDetail = document.querySelector('.feels_like_detail');
     feelsLikeDetail.innerHTML = `Feels Like: ${feels_like_celsius}°C`;
     feelsLikeDetail.dataset.originalTemp = feels_like_celsius;
+
 
     // Box 3 Details
 
@@ -89,10 +91,9 @@ async function displayWeatherInfo(data) {
 
     await fetchAndDisplaySunMoonTimes(lat, lon, timezone);
 
-    // Display hourly temperature chart
+    
     fetchAndDisplayHourlyTemperature(cityID);
 
-    // Handle summary button click
     const summaryButton = document.getElementById('summaryButton');
     const modal = document.getElementById('summaryModal');
     const closeBtn = document.querySelector('.close');
@@ -100,9 +101,8 @@ async function displayWeatherInfo(data) {
 
     summaryButton.onclick = async function() {
     
-        // Show the modal immediately with a loading message
         weatherSummary.innerHTML = "Loading weather overview...";
-        weatherSummary.classList.add('loading'); // Add loading class
+        weatherSummary.classList.add('loading');
         modal.style.display = "block";
     
         try {
@@ -117,7 +117,7 @@ async function displayWeatherInfo(data) {
             weatherSummary.innerHTML = "Error fetching weather overview.";
         }
     
-        weatherSummary.classList.remove('loading'); // Remove loading class
+        weatherSummary.classList.remove('loading'); 
     };
     
 
@@ -214,7 +214,7 @@ function displayHourlyTemperatureChart(hourlyData) {
     const box1 = document.getElementById('box1');
     const canvas = document.createElement('canvas');
     canvas.id = 'hourlyChart';
-    box1.innerHTML = ''; // Clear existing content
+    box1.innerHTML = '';
     box1.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
