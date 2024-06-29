@@ -52,7 +52,7 @@
     width: 200px;
 }
 button, .locationButton {
-    margin: 0; /* Ensure no margin on individual elements */
+    margin: 0; /* no margin  */
     line-height: normal;
 }
 
@@ -178,8 +178,8 @@ main {
     padding: 10px;
     border-radius: 10px;
     z-index: 1;
-    max-width: calc(100% - 20px); /* Ensuring the text fits inside the container */
-    word-wrap: break-word; /* Allowing long words to break and wrap onto the next line */
+    max-width: calc(100% - 20px);
+    word-wrap: break-word;
     font-size: 20px;
 }
 
@@ -190,9 +190,9 @@ main {
 /*Weather Condition Icon*/
 .weather_icon {
     display: inline-block;
-    width: 30px; /* Adjust the width to be responsive and match the font size */
-    height: auto; /* Automatically adjust height based on width */
-    vertical-align: middle; /* Align vertically with text */
+    width: 30px; 
+    height: auto; 
+    vertical-align: middle; 
 }
 .weather_date,
 .weather_time,
@@ -263,7 +263,7 @@ main {
 
 .day_forecast {
     display: flex;
-    justify-content: space-between; /* Space out items */
+    justify-content: space-between; 
     align-items: center; /* Center items vertically */
     padding: 0.5rem 1rem;
     margin: 0.5rem 0;
@@ -281,13 +281,13 @@ main {
 .day_icon {
     width: 40px; 
     height: 40px;
-    margin-left: auto; /* Push icon to the right */
+    margin-left: auto;
 }
 
 .day_temp {
     font-size: 1rem;
     margin-left: 1rem; /* Space between icon and temp */
-    margin-right: 0; /* Align temp to the right */
+    margin-right: 0; /* temp to the right */
     text-align: right;
 }
 
@@ -315,7 +315,7 @@ main {
 
 #box1 {
     width: 60%;
-    height: 250px; /* Adjust height as needed */
+    height: 250px; 
     background-color: #ffffff;
     padding: 15px;
     border-radius: 15px;
@@ -372,11 +372,15 @@ main {
     width: 20%;
     height: 250px;
     background-color: rgb(194, 186, 186);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center; 
 }
 #box3 div {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Adjust spacing between each icon and text */
+    margin-bottom: 10px;
+    margin-top: 1%; 
 }
 
 #box3 img {
@@ -392,17 +396,32 @@ main {
     
 }
 
+#summaryButton {
+    background-color: gray; 
+    color: #fff; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    font-size: 14px; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#summaryButton:hover {
+    background-color: var(--main_color); 
+    transform: scale(1.05); 
+}
+
 /* Modal container */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 100%;
+    height: 100%; 
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 }
 
@@ -410,9 +429,12 @@ main {
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
+    padding: 2rem;
     border: 4px solid #000000;
-    width: 80%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 600px;
+    width: 80%;
     border-radius: 10px;
 }
 
@@ -450,18 +472,18 @@ footer {
     }
 
     .main_content {
-        flex-direction: column; /* Stack main content vertically */
+        flex-direction: column; 
         align-items: stretch;
     }
 
     .weather_container,
     .weekly_forecast {
         width: 100%; /* Full width for weather container and weekly forecast */
-        margin-right: 0; /* Remove right margin */
+        margin-right: 0;
     }
 
     .weekly_forecast {
-        margin-top: 20px; /* Adjust spacing */
+        margin-top: 20px;
     }
 
     .additional_boxes {
@@ -471,13 +493,13 @@ footer {
 
     .additional_box {
         width: 100%; 
-        margin-bottom: 20px; /* Adjust spacing between boxes */
+        margin-bottom: 20px; /* spacing between boxes */
     }
 
     #box1, #box2,
     #box3 {
-        width: 100%; /* Make boxes take full width on mobile */
-        height: auto; /* Let the height adjust based on content */
+        width: 100%; /* full width on mobile */
+        height: auto; /* height adjust based on content */
         margin-right: 0; /* Remove right margin */
     }
 
