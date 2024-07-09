@@ -52,7 +52,7 @@
     width: 200px;
 }
 button, .locationButton {
-    margin: 0; /* no margin  */
+    margin: 0;
     line-height: normal;
 }
 
@@ -69,9 +69,9 @@ button, .locationButton {
     background-color: #ffffff;
     width: calc(100% - 2rem);
     z-index: 2; 
-    top: calc(100% + 10px); /* Position below the search bar with some space */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust to center properly */
+    top: calc(100% + 10px); 
+    left: 50%; 
+    transform: translateX(-50%); 
     border: none;
 }
 
@@ -105,7 +105,7 @@ button {
     height: 40px;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* navigation to the left */
+    justify-content: flex-start; 
 }
 
 .navigation_item {
@@ -130,14 +130,15 @@ main {
     align-items: flex-start;
     margin-top: 20px;
 }
-.weather_container { /*Container*/
+.weather_container { 
     position: relative;
     margin-right: 20px;
     width: 100%;
-    height: 25rem; /* Ensuring the container height matches the image */
+    height: 25rem; 
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid black;
 }
 
 .weather_visualizer { /* main image */
@@ -151,7 +152,7 @@ main {
 .half1, .half2 {
     position: absolute;
     width: 100%;
-    z-index: 1; /* Ensuring the content appears above the image */
+    z-index: 1; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -187,7 +188,8 @@ main {
     font-size: 2rem; 
     margin-bottom: 1.5%;
 }
-/*Weather Condition Icon*/
+
+
 .weather_icon {
     display: inline-block;
     width: 30px; 
@@ -200,7 +202,7 @@ main {
     font-size: 1.5rem;
 }
 
-.toggle-btn { /* fahrenheit/celcius*/
+.toggle-btn { 
     background-color: transparent; 
     color: #fff; 
     opacity: 50%;
@@ -213,7 +215,7 @@ main {
     
 }
 .toggle-btn:hover {
-    background-color: #2980b9; /* Change background color on hover */
+    background-color: #2980b9; 
 }
 
 .weather_detailscontainer {
@@ -225,7 +227,7 @@ main {
     padding: 10px;
     border-radius: 20px;
     height: 30%;
-    width: 80%; /* Adjusted width to fit inside the weather visualizer */
+    width: 80%; 
     font-size: 50%;
 }
 
@@ -238,9 +240,9 @@ main {
 
 
 .weather_detailscontainer img {
-    width: 20px; /* Ensure consistent width for images */
-    height: 20px; /* Ensure consistent height for images */
-    margin-right: 5px; /* Space between image and text */
+    width: 20px; 
+    height: 20px; 
+    margin-right: 5px; 
 }
 
 .weather_detailscontainer p {
@@ -264,7 +266,7 @@ main {
 .day_forecast {
     display: flex;
     justify-content: space-between; 
-    align-items: center; /* Center items vertically */
+    align-items: center; 
     padding: 0.5rem 1rem;
     margin: 0.5rem 0;
     background-color: #ffffff; 
@@ -273,9 +275,9 @@ main {
 
 .date_name {
     display: flex;
-    flex-direction: column; /* Align date and name vertically */
-    gap: 0.4rem; /* Space between date and name */
-    flex: 1; /* Take up remaining space */
+    flex-direction: column; 
+    gap: 0.4rem; 
+    flex: 1; 
 }
 
 .day_icon {
@@ -286,8 +288,8 @@ main {
 
 .day_temp {
     font-size: 1rem;
-    margin-left: 1rem; /* Space between icon and temp */
-    margin-right: 0; /* temp to the right */
+    margin-left: 1rem; 
+    margin-right: 0; 
     text-align: right;
 }
 
@@ -384,8 +386,8 @@ main {
 }
 
 #box3 img {
-    margin-right: 10px; /* Adjust spacing between icon and text */
-    vertical-align: middle; /* Ensure proper alignment */
+    margin-right: 10px; 
+    vertical-align: middle; 
 }
 
 #box3 .humidity_detail,
@@ -412,6 +414,7 @@ main {
     transform: scale(1.05); 
 }
 
+
 /* Modal container */
 .modal {
     display: none; 
@@ -421,14 +424,14 @@ main {
     top: 0;
     width: 100%;
     height: 100%; 
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); /
 }
 
-/* Modal content box */
+
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto; 
     padding: 2rem;
     border: 4px solid #000000;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -453,7 +456,7 @@ main {
     cursor: pointer;
 }
 
-/* Add loading indicator style */
+
 .weather_summary.loading {
     font-style: italic;
     color: gray;
@@ -464,11 +467,12 @@ footer {
     height: 5rem;
 }
 
+
 /* mobile */
 
 @media (max-width: 768px) {
     .main_logo {
-        display: none; /* Hide main logo on smaller screens */
+        display: none; 
     }
 
     .main_content {
@@ -478,7 +482,7 @@ footer {
 
     .weather_container,
     .weekly_forecast {
-        width: 100%; /* Full width for weather container and weekly forecast */
+        width: 100%; 
         margin-right: 0;
     }
 
@@ -493,14 +497,14 @@ footer {
 
     .additional_box {
         width: 100%; 
-        margin-bottom: 20px; /* spacing between boxes */
+        margin-bottom: 20px; 
     }
 
     #box1, #box2,
     #box3 {
-        width: 100%; /* full width on mobile */
-        height: auto; /* height adjust based on content */
-        margin-right: 0; /* Remove right margin */
+        width: 100%; 
+        height: auto; 
+        margin-right: 0; 
     }
 
     
