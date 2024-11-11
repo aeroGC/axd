@@ -81,7 +81,7 @@ async function getSunMoonTimes(lat, lon, timezoneOffset) {
         const data = await response.json();
         
         const convertToCityTime = (utcSeconds) => {
-            const adjustedSeconds = utcSeconds - 7200; 
+            const adjustedSeconds = utcSeconds - 3600; 
             return new Date((adjustedSeconds + timezoneOffset) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         };
 
